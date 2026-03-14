@@ -1,23 +1,14 @@
-# claude-skills
+# skills
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-Custom Claude skills for body recomposition tracking & AI dataset generation — installable as a Claude Code plugin marketplace and compatible with [Goose](https://block.github.io/goose/).
+A collection of personal AI skills — installable as a Claude Code plugin marketplace and compatible with [Goose](https://block.github.io/goose/).
 
 ## Available Skills
 
-### corpo
-
-Body recomposition tracker that:
-
-- Parses nutritional and training program PDFs to extract body composition data (weight, fat mass, lean mass, BMI)
-- Tracks body composition trends over time across multiple programs
-- Manages supplement and compound cycle history with health risk assessment
-- Calculates daily kcal and macronutrient estimates from Italian meal plans
-- Detects training phases (cutting, bulking, PCT/recovery, maintenance)
-- Generates interactive HTML dashboards with Chart.js visualizations
-- Maintains persistent memory for next steps, nutritionist recommendations, and bloodwork history
-- Integrates with Garmin wearable data for health tracking
+| Skill | Description |
+|-------|-------------|
+| [corpo](plugins/corpo) | Body recomposition tracker — parses nutritional/training PDFs, tracks body composition, manages supplement cycles with health risk assessment, and generates interactive dashboards |
 
 ## Installation
 
@@ -26,7 +17,7 @@ Body recomposition tracker that:
 **Marketplace:**
 
 ```
-/plugin marketplace add vincenzopalazzo/claude-skills
+/plugin marketplace add vincenzopalazzo/skills
 /plugin install corpo@vincenzopalazzo-skills
 ```
 
@@ -84,15 +75,15 @@ cp -r skills/skills/corpo .goose/skills/corpo
 ├── .claude-plugin/
 │   └── marketplace.json          # Claude Code plugin marketplace index
 ├── plugins/
-│   └── corpo/
+│   └── <skill>/
 │       └── .claude-plugin/
 │           ├── plugin.json       # Claude Code plugin metadata
 │           └── skills/
-│               └── corpo/
+│               └── <skill>/
 │                   ├── SKILL.md  # Skill definition (shared by both)
-│                   └── scripts/  # Python scripts
+│                   └── scripts/  # Supporting scripts
 ├── skills/
-│   └── corpo -> ../plugins/corpo/.claude-plugin/skills/corpo
+│   └── <skill> -> ../plugins/<skill>/.claude-plugin/skills/<skill>
 │                                 # Symlink for Goose compatibility
 ├── LICENSE
 └── README.md
