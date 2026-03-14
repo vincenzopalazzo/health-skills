@@ -1,0 +1,5 @@
+{
+  "name": "corpo",
+  "description": "Body recomposition tracker — parses nutritional/training program PDFs, tracks body composition over time, manages supplement cycles with health risk assessment, integrates Garmin wearable data, and generates interactive health dashboards.",
+  "version": "1.0.0"
+}
