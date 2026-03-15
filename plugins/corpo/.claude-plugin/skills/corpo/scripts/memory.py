@@ -33,7 +33,6 @@ import os
 import sys
 from datetime import datetime
 
-
 MEMORY_FILENAME = "nutrizionista_memory.json"
 
 
@@ -46,7 +45,7 @@ def load_memory(programs_root):
     """Load the memory file, creating a default one if it doesn't exist."""
     path = get_memory_path(programs_root)
     if os.path.exists(path):
-        with open(path, 'r', encoding='utf-8') as f:
+        with open(path, "r", encoding="utf-8") as f:
             return json.load(f)
 
     # Create default memory structure
@@ -73,7 +72,7 @@ def save_memory(programs_root, memory):
     """Save the memory file."""
     path = get_memory_path(programs_root)
     memory["last_updated"] = datetime.now().isoformat()
-    with open(path, 'w', encoding='utf-8') as f:
+    with open(path, "w", encoding="utf-8") as f:
         json.dump(memory, f, ensure_ascii=False, indent=2)
     return path
 
@@ -86,19 +85,26 @@ def generate_step_id(memory):
     return max(s.get("id", 0) for s in all_steps) + 1
 
 
-def add_next_step(memory, description, category="generale", priority="media",
-                  source=None, due_date=None, details=None):
+def add_next_step(
+    memory,
+    description,
+    category="generale",
+    priority="media",
+    source=None,
+    due_date=None,
+    details=None,
+):
     """Add a next step / action item."""
     step = {
         "id": generate_step_id(memory),
         "description": description,
-        "category": category,    # analisi, supplementi, alimentazione, allenamento, visita, generale
-        "priority": priority,    # alta, media, bassa
+        "category": category,  # analisi, supplementi, alimentazione, allenamento, visita, generale
+        "priority": priority,  # alta, media, bassa
         "status": "pending",
         "created": datetime.now().isoformat(),
         "due_date": due_date,
-        "source": source,        # e.g., "Musolino", "AI analysis", "self"
-        "details": details,      # additional context
+        "source": source,  # e.g., "Musolino", "AI analysis", "self"
+        "details": details,  # additional context
     }
     memory["next_steps"].append(step)
     return step
@@ -130,8 +136,13 @@ def add_note(memory, text, source=None, related_program=None):
     return note
 
 
-def add_nutritionist_recommendation(memory, recommendation, nutritionist="Musolino",
-                                      related_program=None, action_items=None):
+def add_nutritionist_recommendation(
+    memory,
+    recommendation,
+    nutritionist="Musolino",
+    related_program=None,
+    action_items=None,
+):
     """Add a recommendation from the nutritionist."""
     rec = {
         "id": len(memory.get("nutritionist_recommendations", [])) + 1,
@@ -211,14 +222,22 @@ def format_summary(memory):
 
         # Sort by priority
         priority_order = {"alta": 0, "media": 1, "bassa": 2}
-        pending_sorted = sorted(pending, key=lambda s: priority_order.get(s.get("priority", "media"), 1))
+        pending_sorted = sorted(
+            pending, key=lambda s: priority_order.get(s.get("priority", "media"), 1)
+        )
 
         for step in pending_sorted:
-            priority_icon = {"alta": "🔴", "media": "🟡", "bassa": "🟢"}.get(step.get("priority", "media"), "⚪")
+            priority_icon = {"alta": "🔴", "media": "🟡", "bassa": "🟢"}.get(
+                step.get("priority", "media"), "⚪"
+            )
             source_str = f" [da {step['source']}]" if step.get("source") else ""
             due_str = f" — scadenza: {step['due_date']}" if step.get("due_date") else ""
-            details_str = f"\n    Dettagli: {step['details']}" if step.get("details") else ""
-            lines.append(f"  {priority_icon} [{step['id']}] {step['description']} ({step['category']}){source_str}{due_str}{details_str}")
+            details_str = (
+                f"\n    Dettagli: {step['details']}" if step.get("details") else ""
+            )
+            lines.append(
+                f"  {priority_icon} [{step['id']}] {step['description']} ({step['category']}){source_str}{due_str}{details_str}"
+            )
 
     # Recent notes
     notes = memory.get("notes", [])
@@ -234,14 +253,18 @@ def format_summary(memory):
         lines.append(f"\n--- RACCOMANDAZIONI NUTRIZIONISTA ---")
         for rec in recs[-3:]:  # last 3
             status = "✅" if rec.get("followed") else "⏳"
-            lines.append(f"  {status} {rec['recommendation']} [{rec['nutritionist']}] ({rec['date'][:10]})")
+            lines.append(
+                f"  {status} {rec['recommendation']} [{rec['nutritionist']}] ({rec['date'][:10]})"
+            )
 
     # Bloodwork history
     blood = memory.get("bloodwork_history", [])
     if blood:
         lines.append(f"\n--- STORICO ANALISI ---")
         for b in blood[-3:]:
-            lines.append(f"  • {b['date']}: {', '.join(b['tests_done'][:5])}{'...' if len(b['tests_done']) > 5 else ''}")
+            lines.append(
+                f"  • {b['date']}: {', '.join(b['tests_done'][:5])}{'...' if len(b['tests_done']) > 5 else ''}"
+            )
 
     # Recently completed steps
     completed = memory.get("completed_steps", [])
@@ -249,7 +272,9 @@ def format_summary(memory):
         lines.append(f"\n--- COMPLETATI DI RECENTE ({len(completed)} totali) ---")
         for step in completed[-3:]:
             outcome_str = f" → {step['outcome']}" if step.get("outcome") else ""
-            lines.append(f"  ✅ {step['description']}{outcome_str} ({step.get('completed_date', '?')[:10]})")
+            lines.append(
+                f"  ✅ {step['description']}{outcome_str} ({step.get('completed_date', '?')[:10]})"
+            )
 
     lines.append("\n" + "=" * 60)
     return "\n".join(lines)
@@ -259,17 +284,25 @@ def main():
     parser = argparse.ArgumentParser(description="Manage nutritional program memory")
     parser.add_argument("programs_root", help="Root directory of nutritional programs")
     parser.add_argument("--read", action="store_true", help="Read current memory")
-    parser.add_argument("--summary", action="store_true", help="Print formatted summary")
+    parser.add_argument(
+        "--summary", action="store_true", help="Print formatted summary"
+    )
     parser.add_argument("--add-step", help="Add a next step")
     parser.add_argument("--category", default="generale", help="Step category")
-    parser.add_argument("--priority", default="media", help="Step priority (alta/media/bassa)")
+    parser.add_argument(
+        "--priority", default="media", help="Step priority (alta/media/bassa)"
+    )
     parser.add_argument("--source", help="Who recommended this step")
     parser.add_argument("--due-date", help="Due date for the step")
     parser.add_argument("--details", help="Additional details")
-    parser.add_argument("--complete-step", type=int, help="Mark a step as completed by ID")
+    parser.add_argument(
+        "--complete-step", type=int, help="Mark a step as completed by ID"
+    )
     parser.add_argument("--outcome", help="Outcome of completed step")
     parser.add_argument("--add-note", help="Add a note")
-    parser.add_argument("--init", action="store_true", help="Initialize/reset memory file")
+    parser.add_argument(
+        "--init", action="store_true", help="Initialize/reset memory file"
+    )
     args = parser.parse_args()
 
     if args.init:
@@ -281,10 +314,15 @@ def main():
     memory = load_memory(args.programs_root)
 
     if args.add_step:
-        step = add_next_step(memory, args.add_step,
-                             category=args.category, priority=args.priority,
-                             source=args.source, due_date=args.due_date,
-                             details=args.details)
+        step = add_next_step(
+            memory,
+            args.add_step,
+            category=args.category,
+            priority=args.priority,
+            source=args.source,
+            due_date=args.due_date,
+            details=args.details,
+        )
         save_memory(args.programs_root, memory)
         print(f"Added step #{step['id']}: {step['description']}", file=sys.stderr)
 
@@ -292,7 +330,9 @@ def main():
         step = complete_step(memory, args.complete_step, outcome=args.outcome)
         if step:
             save_memory(args.programs_root, memory)
-            print(f"Completed step #{step['id']}: {step['description']}", file=sys.stderr)
+            print(
+                f"Completed step #{step['id']}: {step['description']}", file=sys.stderr
+            )
         else:
             print(f"Step #{args.complete_step} not found", file=sys.stderr)
 

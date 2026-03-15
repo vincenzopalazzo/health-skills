@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-A collection of personal AI skills — installable as a Claude Code plugin marketplace and compatible with [Goose](https://block.github.io/goose/).
+A collection of personal AI [skills](https://support.claude.com/en/articles/12512176-what-are-skills) — installable as a Claude Code plugin marketplace and compatible with [Goose](https://block.github.io/goose/).
 
 ## Available Skills
 

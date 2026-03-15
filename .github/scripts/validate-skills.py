@@ -65,7 +65,9 @@ def validate_skill(skill_dir: Path, errors: list[str]) -> None:
 
     fm = parse_frontmatter(skill_md)
     if fm is None:
-        errors.append(f"{skill_md}: missing or invalid YAML frontmatter (must start with ---)")
+        errors.append(
+            f"{skill_md}: missing or invalid YAML frontmatter (must start with ---)"
+        )
         return
 
     # Check name field
@@ -75,16 +77,22 @@ def validate_skill(skill_dir: Path, errors: list[str]) -> None:
     elif len(name) > 64:
         errors.append(f"{skill_md}: name exceeds 64 characters ({len(name)})")
     elif not re.match(r"^[a-z][a-z0-9]*(-[a-z0-9]+)*$", name):
-        errors.append(f"{skill_md}: name '{name}' must be kebab-case (lowercase, hyphens)")
+        errors.append(
+            f"{skill_md}: name '{name}' must be kebab-case (lowercase, hyphens)"
+        )
 
     # Check name matches directory
     if name and name != skill_dir.name:
-        errors.append(f"{skill_md}: name '{name}' does not match directory '{skill_dir.name}'")
+        errors.append(
+            f"{skill_md}: name '{name}' does not match directory '{skill_dir.name}'"
+        )
 
     # Check description field
     desc = fm.get("description", "")
     if not desc:
-        errors.append(f"{skill_md}: missing required 'description' field in frontmatter")
+        errors.append(
+            f"{skill_md}: missing required 'description' field in frontmatter"
+        )
     elif len(desc) > 2048:
         errors.append(f"{skill_md}: description exceeds 1024 characters ({len(desc)})")
 
@@ -116,7 +124,9 @@ def validate_plugin_json(plugin_json: Path, errors: list[str]) -> None:
 
     version = data.get("version")
     if version and not re.match(r"^\d+\.\d+\.\d+(-[a-zA-Z0-9.]+)?$", version):
-        errors.append(f"{plugin_json}: version '{version}' must follow semver (MAJOR.MINOR.PATCH)")
+        errors.append(
+            f"{plugin_json}: version '{version}' must follow semver (MAJOR.MINOR.PATCH)"
+        )
 
 
 def main() -> int:

@@ -10,43 +10,48 @@ import sys
 
 
 def generate_html(data, output_path):
-    programs = data['programs']
-    risk = data['risk_summary']
-    history = data.get('body_comp_history', [])
+    programs = data["programs"]
+    risk = data["risk_summary"]
+    history = data.get("body_comp_history", [])
 
-    macro_timeline = data.get('macro_timeline', [])
+    macro_timeline = data.get("macro_timeline", [])
 
     # Build chart data - only programs with weight
     weight_labels = []
     weight_data = []
     weight_colors = []
     for p in programs:
-        if p.get('weight') and p.get('date'):
+        if p.get("weight") and p.get("date"):
             label = f"#{p['program_num']} ({p['date'][:5]})"
             weight_labels.append(label)
-            weight_data.append(p['weight'])
+            weight_data.append(p["weight"])
             # Color by phase
-            phase = p.get('phase', '')
-            if 'assisted' in phase:
-                weight_colors.append('#f43f5e')
-            elif 'pct' in phase or 'recovery' in phase:
-                weight_colors.append('#a78bfa')
-            elif 'cutting' in phase:
-                weight_colors.append('#22d3ee')
-            elif 'bulk' in phase:
-                weight_colors.append('#f59e0b')
+            phase = p.get("phase", "")
+            if "assisted" in phase:
+                weight_colors.append("#f43f5e")
+            elif "pct" in phase or "recovery" in phase:
+                weight_colors.append("#a78bfa")
+            elif "cutting" in phase:
+                weight_colors.append("#22d3ee")
+            elif "bulk" in phase:
+                weight_colors.append("#f59e0b")
             else:
-                weight_colors.append('#667eea')
+                weight_colors.append("#667eea")
 
     # Body comp data
     bc_labels = []
     bc_fm = []
     bc_ffm = []
     for p in programs:
-        if p.get('fat_mass') and p.get('lean_mass') and p.get('fat_mass') < 20 and p.get('lean_mass') > 50:
+        if (
+            p.get("fat_mass")
+            and p.get("lean_mass")
+            and p.get("fat_mass") < 20
+            and p.get("lean_mass") > 50
+        ):
             bc_labels.append(f"#{p['program_num']} ({p['date'][:5]})")
-            bc_fm.append(p['fat_mass'])
-            bc_ffm.append(p['lean_mass'])
+            bc_fm.append(p["fat_mass"])
+            bc_ffm.append(p["lean_mass"])
 
     # Macro chart data
     macro_labels = []
@@ -56,121 +61,142 @@ def generate_html(data, output_path):
     macro_fat = []
     macro_ppkg = []
     for mt in macro_timeline:
-        if mt.get('daily_kcal_avg') and mt['daily_kcal_avg'] > 800:  # filter out incomplete extractions
+        if (
+            mt.get("daily_kcal_avg") and mt["daily_kcal_avg"] > 800
+        ):  # filter out incomplete extractions
             label = f"#{mt['program_num']} ({mt.get('date', '?')[:5]})"
             macro_labels.append(label)
-            macro_kcal.append(round(mt['daily_kcal_avg']))
-            macro_protein.append(round(mt.get('protein_g', 0)))
-            macro_carbs.append(round(mt.get('carbs_g', 0)))
-            macro_fat.append(round(mt.get('fat_g', 0)))
-            macro_ppkg.append(mt.get('protein_per_kg', 0))
+            macro_kcal.append(round(mt["daily_kcal_avg"]))
+            macro_protein.append(round(mt.get("protein_g", 0)))
+            macro_carbs.append(round(mt.get("carbs_g", 0)))
+            macro_fat.append(round(mt.get("fat_g", 0)))
+            macro_ppkg.append(mt.get("protein_per_kg", 0))
 
     # Current program macro summary for the highlight box
     current_macros = None
     for mt in reversed(macro_timeline):
-        if mt.get('daily_kcal_avg') and mt['daily_kcal_avg'] > 800:
+        if mt.get("daily_kcal_avg") and mt["daily_kcal_avg"] > 800:
             current_macros = mt
             break
 
     # Timeline items
     timeline_html = ""
     for p in programs:
-        if not p.get('date'):
+        if not p.get("date"):
             continue
 
-        supps = p.get('supplements_classified', [])
-        if not supps and not p.get('weight'):
+        supps = p.get("supplements_classified", [])
+        if not supps and not p.get("weight"):
             continue
 
         # Determine danger level
-        max_risk = 'safe'
+        max_risk = "safe"
         for s in supps:
-            r = s['risk']
-            if r in ('very_high', 'high'):
-                max_risk = 'danger'
+            r = s["risk"]
+            if r in ("very_high", "high"):
+                max_risk = "danger"
                 break
-            elif r in ('medium-high', 'medium'):
-                if max_risk != 'danger':
-                    max_risk = 'warning'
+            elif r in ("medium-high", "medium"):
+                if max_risk != "danger":
+                    max_risk = "warning"
 
-        wc = p.get('weight_change')
+        wc = p.get("weight_change")
         wc_str = f" ({wc:+.1f} kg)" if wc is not None else ""
-        weight_str = f"{p['weight']:.1f} kg" if p.get('weight') else "? kg"
-        obj_str = f" → obiettivo {p['objective']:.0f} kg" if p.get('objective') else ""
+        weight_str = f"{p['weight']:.1f} kg" if p.get("weight") else "? kg"
+        obj_str = f" → obiettivo {p['objective']:.0f} kg" if p.get("objective") else ""
 
         supp_tags = ""
         for s in supps:
-            cat = s['category']
+            cat = s["category"]
             tag_class = {
-                'SARM': 'tag-sarm', 'pro_hormone': 'tag-ph', 'GH_secretagogue': 'tag-ph',
-                'GH_booster': 'tag-ph', 'PPAR_delta_agonist': 'tag-sarm',
-                'PCT': 'tag-pct', 'ecdysteroid': 'tag-pct',
-                'liver_support': 'tag-liver', 'thermogenic': 'tag-thermo',
-                'fat_burner': 'tag-thermo', 'base': 'tag-base', 'probiotic': 'tag-base',
-                'testosterone_booster': 'tag-ph',
-            }.get(cat, 'tag-base')
+                "SARM": "tag-sarm",
+                "pro_hormone": "tag-ph",
+                "GH_secretagogue": "tag-ph",
+                "GH_booster": "tag-ph",
+                "PPAR_delta_agonist": "tag-sarm",
+                "PCT": "tag-pct",
+                "ecdysteroid": "tag-pct",
+                "liver_support": "tag-liver",
+                "thermogenic": "tag-thermo",
+                "fat_burner": "tag-thermo",
+                "base": "tag-base",
+                "probiotic": "tag-base",
+                "testosterone_booster": "tag-ph",
+            }.get(cat, "tag-base")
             supp_tags += f'<span class="supp-tag {tag_class}">{s["name"]}</span>\n'
 
         if not supp_tags:
             supp_tags = '<span class="supp-tag tag-base">Solo base (Whey)</span>'
 
         cardio_str = ""
-        if p.get('has_cardio'):
-            cardio_str = f'<div class="cardio-note">Cardio: {p.get("cardio_detail", "Si")}</div>'
+        if p.get("has_cardio"):
+            cardio_str = (
+                f'<div class="cardio-note">Cardio: {p.get("cardio_detail", "Si")}</div>'
+            )
 
         training_str = ""
-        ts = p.get('training_summary', {})
-        if ts.get('intensity_techniques'):
+        ts = p.get("training_summary", {})
+        if ts.get("intensity_techniques"):
             training_str = f'<div class="training-note">Tecniche: {", ".join(ts["intensity_techniques"])}</div>'
 
-        timeline_html += f'''
+        timeline_html += f"""
         <div class="timeline-item {max_risk}">
           <div class="date">#{p['program_num']} — {p['date']} — {weight_str}{wc_str}{obj_str}</div>
           <div class="phase-tag">{p.get('phase_label', '?')}</div>
           <div class="supp-list">{supp_tags}</div>
           {cardio_str}
           {training_str}
-        </div>'''
+        </div>"""
 
     # Risk cards
     risk_html = ""
-    risk_order = ['liver', 'hpta', 'cardiovascular', 'cancer', 'kidney']
+    risk_order = ["liver", "hpta", "cardiovascular", "cancer", "kidney"]
     risk_titles = {
-        'liver': 'Fegato (Epatotossicità)',
-        'hpta': 'Asse Ormonale (HPTA)',
-        'cardiovascular': 'Sistema Cardiovascolare',
-        'cancer': 'Rischio Cancerogenicità (GW501516)',
-        'kidney': 'Reni',
+        "liver": "Fegato (Epatotossicità)",
+        "hpta": "Asse Ormonale (HPTA)",
+        "cardiovascular": "Sistema Cardiovascolare",
+        "cancer": "Rischio Cancerogenicità (GW501516)",
+        "kidney": "Reni",
     }
     risk_descriptions = {
-        'liver': 'Il DMZ (Dymethazine) è un composto 17α-alchilato con severa epatotossicità. Usato in 2 cicli (#58, #60). RAD 140 aggiunge ulteriore stress epatico. Il Liver (Revange) presente in molti programmi offre protezione parziale, ma non nel #72 attuale.',
-        'hpta': 'Cicli ripetuti di SARMs (Ostarine, RAD 140 x2) e pro-ormoni (DMZ x2, G-Mass) dal 2022 al 2026 hanno causato soppressione ripetuta dell\'asse ipotalamo-ipofisi-gonadi. Il PCT PRO usato nel #71 (Nov 2025) e il ritorno al RAD 140 nel #72 (Gen 2026) a soli 2 mesi di distanza indica cicli molto ravvicinati senza recupero completo.',
-        'cardiovascular': 'Score molto alto dovuto all\'accumulo di: SARMs (abbattono HDL), pro-ormoni, termogenici stimolanti (Ripper), e ora Yohimbine HCL nel #72. La combinazione RAD 140 + Yohimbine + cardio intenso nel programma attuale è particolarmente stressante per il sistema cardiovascolare.',
-        'cancer': 'Il GW501516 (Cardarine) usato nel #49 è stato abbandonato dalla ricerca per sviluppo di tumori in studi animali. Un singolo ciclo breve limita il rischio, ma rimane un fattore da monitorare.',
-        'kidney': 'Rischio contenuto. Monitorare creatinina e eGFR come precauzione generale dato l\'uso prolungato di composti.',
+        "liver": "Il DMZ (Dymethazine) è un composto 17α-alchilato con severa epatotossicità. Usato in 2 cicli (#58, #60). RAD 140 aggiunge ulteriore stress epatico. Il Liver (Revange) presente in molti programmi offre protezione parziale, ma non nel #72 attuale.",
+        "hpta": "Cicli ripetuti di SARMs (Ostarine, RAD 140 x2) e pro-ormoni (DMZ x2, G-Mass) dal 2022 al 2026 hanno causato soppressione ripetuta dell'asse ipotalamo-ipofisi-gonadi. Il PCT PRO usato nel #71 (Nov 2025) e il ritorno al RAD 140 nel #72 (Gen 2026) a soli 2 mesi di distanza indica cicli molto ravvicinati senza recupero completo.",
+        "cardiovascular": "Score molto alto dovuto all'accumulo di: SARMs (abbattono HDL), pro-ormoni, termogenici stimolanti (Ripper), e ora Yohimbine HCL nel #72. La combinazione RAD 140 + Yohimbine + cardio intenso nel programma attuale è particolarmente stressante per il sistema cardiovascolare.",
+        "cancer": "Il GW501516 (Cardarine) usato nel #49 è stato abbandonato dalla ricerca per sviluppo di tumori in studi animali. Un singolo ciclo breve limita il rischio, ma rimane un fattore da monitorare.",
+        "kidney": "Rischio contenuto. Monitorare creatinina e eGFR come precauzione generale dato l'uso prolungato di composti.",
     }
 
     for key in risk_order:
         r = risk[key]
-        level = r['level']
-        css_class = 'risk-high' if level in ('very_high', 'high') else ('risk-medium' if level in ('medium', 'medium-high', 'low-medium') else 'risk-low')
-        compounds = ', '.join(r['compounds']) if r['compounds'] else 'N/A'
-        notes = '<br>'.join(r.get('notes', []))
+        level = r["level"]
+        css_class = (
+            "risk-high"
+            if level in ("very_high", "high")
+            else (
+                "risk-medium"
+                if level in ("medium", "medium-high", "low-medium")
+                else "risk-low"
+            )
+        )
+        compounds = ", ".join(r["compounds"]) if r["compounds"] else "N/A"
+        notes = "<br>".join(r.get("notes", []))
 
-        risk_html += f'''
+        risk_html += f"""
         <div class="risk-card {css_class}">
           <div class="risk-label">{level.replace('_', ' ').upper()} — {risk_titles[key]}</div>
           <p><strong>Score:</strong> {r["score"]} | <strong>Composti coinvolti:</strong> {compounds}</p>
           <p style="margin-top:8px">{risk_descriptions[key]}</p>
           {"<p style='margin-top:8px;color:#fbbf24'>" + notes + "</p>" if notes else ""}
-        </div>'''
+        </div>"""
 
     # Summary stats
-    summary = risk['summary']
-    current = programs[-2] if programs[-1]['program_num'] == 404 else programs[-1]  # skip #404
+    summary = risk["summary"]
+    current = (
+        programs[-2] if programs[-1]["program_num"] == 404 else programs[-1]
+    )  # skip #404
     # Find actual last program
     for p in reversed(programs):
-        if p.get('date') and p['program_num'] != 404:
+        if p.get("date") and p["program_num"] != 404:
             current = p
             break
 
@@ -455,18 +481,20 @@ new Chart(pkCtx, {{
 </body>
 </html>'''
 
-    with open(output_path, 'w', encoding='utf-8') as f:
+    with open(output_path, "w", encoding="utf-8") as f:
         f.write(html)
     print(f"Report saved to {output_path}", file=sys.stderr)
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Generate HTML report from extracted program data")
+    parser = argparse.ArgumentParser(
+        description="Generate HTML report from extracted program data"
+    )
     parser.add_argument("input", help="Input JSON file from extract_programs.py")
     parser.add_argument("--output", "-o", required=True, help="Output HTML file path")
     args = parser.parse_args()
 
-    with open(args.input, 'r', encoding='utf-8') as f:
+    with open(args.input, "r", encoding="utf-8") as f:
         data = json.load(f)
 
     generate_html(data, args.output)

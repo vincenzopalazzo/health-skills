@@ -23,119 +23,335 @@ except ImportError:
 # ── Compound classification ──────────────────────────────────────────────────
 COMPOUND_DB = {
     # SARMs
-    "rad 140": {"name": "RAD 140 (Testolone)", "category": "SARM", "risk": "high",
-                "effects": ["HPTA suppression", "hepatotoxicity", "HDL reduction"],
-                "notes": "One of the most potent SARMs, significant testosterone suppression"},
-    "rad140": {"name": "RAD 140 (Testolone)", "category": "SARM", "risk": "high",
-               "effects": ["HPTA suppression", "hepatotoxicity", "HDL reduction"], "notes": ""},
-    "mk2866": {"name": "MK-2866 (Ostarine)", "category": "SARM", "risk": "high",
-               "effects": ["HPTA suppression", "HDL reduction"],
-               "notes": "Milder SARM but still suppressive"},
-    "mk-2866": {"name": "MK-2866 (Ostarine)", "category": "SARM", "risk": "high",
-                "effects": ["HPTA suppression", "HDL reduction"], "notes": ""},
-    "ostarine": {"name": "MK-2866 (Ostarine)", "category": "SARM", "risk": "high",
-                 "effects": ["HPTA suppression", "HDL reduction"], "notes": ""},
-    "lgd-4033": {"name": "LGD-4033 (Ligandrol)", "category": "SARM", "risk": "high",
-                 "effects": ["HPTA suppression", "HDL reduction", "water retention"], "notes": ""},
-
+    "rad 140": {
+        "name": "RAD 140 (Testolone)",
+        "category": "SARM",
+        "risk": "high",
+        "effects": ["HPTA suppression", "hepatotoxicity", "HDL reduction"],
+        "notes": "One of the most potent SARMs, significant testosterone suppression",
+    },
+    "rad140": {
+        "name": "RAD 140 (Testolone)",
+        "category": "SARM",
+        "risk": "high",
+        "effects": ["HPTA suppression", "hepatotoxicity", "HDL reduction"],
+        "notes": "",
+    },
+    "mk2866": {
+        "name": "MK-2866 (Ostarine)",
+        "category": "SARM",
+        "risk": "high",
+        "effects": ["HPTA suppression", "HDL reduction"],
+        "notes": "Milder SARM but still suppressive",
+    },
+    "mk-2866": {
+        "name": "MK-2866 (Ostarine)",
+        "category": "SARM",
+        "risk": "high",
+        "effects": ["HPTA suppression", "HDL reduction"],
+        "notes": "",
+    },
+    "ostarine": {
+        "name": "MK-2866 (Ostarine)",
+        "category": "SARM",
+        "risk": "high",
+        "effects": ["HPTA suppression", "HDL reduction"],
+        "notes": "",
+    },
+    "lgd-4033": {
+        "name": "LGD-4033 (Ligandrol)",
+        "category": "SARM",
+        "risk": "high",
+        "effects": ["HPTA suppression", "HDL reduction", "water retention"],
+        "notes": "",
+    },
     # GH Secretagogues
-    "mk-677": {"name": "MK-677 (Ibutamoren)", "category": "GH_secretagogue", "risk": "medium-high",
-               "effects": ["insulin resistance", "water retention", "increased appetite", "elevated GH/IGF-1"],
-               "notes": "Non-suppressive to HPTA, but long-term GH elevation carries risks"},
-    "mk677": {"name": "MK-677 (Ibutamoren)", "category": "GH_secretagogue", "risk": "medium-high",
-              "effects": ["insulin resistance", "water retention", "increased appetite"], "notes": ""},
-    "lx-gh pro": {"name": "LX-GH PRO (Core Labs)", "category": "GH_booster", "risk": "medium-high",
-                  "effects": ["GH elevation", "possible liver stress"], "notes": ""},
-
+    "mk-677": {
+        "name": "MK-677 (Ibutamoren)",
+        "category": "GH_secretagogue",
+        "risk": "medium-high",
+        "effects": [
+            "insulin resistance",
+            "water retention",
+            "increased appetite",
+            "elevated GH/IGF-1",
+        ],
+        "notes": "Non-suppressive to HPTA, but long-term GH elevation carries risks",
+    },
+    "mk677": {
+        "name": "MK-677 (Ibutamoren)",
+        "category": "GH_secretagogue",
+        "risk": "medium-high",
+        "effects": ["insulin resistance", "water retention", "increased appetite"],
+        "notes": "",
+    },
+    "lx-gh pro": {
+        "name": "LX-GH PRO (Core Labs)",
+        "category": "GH_booster",
+        "risk": "medium-high",
+        "effects": ["GH elevation", "possible liver stress"],
+        "notes": "",
+    },
     # PPAR-delta
-    "gw501516": {"name": "GW501516 (Cardarine)", "category": "PPAR_delta_agonist", "risk": "high",
-                 "effects": ["potential carcinogenicity (animal studies)", "improved endurance"],
-                 "notes": "Abandoned by GSK due to tumor development in rats/mice"},
-    "cardarine": {"name": "GW501516 (Cardarine)", "category": "PPAR_delta_agonist", "risk": "high",
-                  "effects": ["potential carcinogenicity"], "notes": ""},
-
+    "gw501516": {
+        "name": "GW501516 (Cardarine)",
+        "category": "PPAR_delta_agonist",
+        "risk": "high",
+        "effects": ["potential carcinogenicity (animal studies)", "improved endurance"],
+        "notes": "Abandoned by GSK due to tumor development in rats/mice",
+    },
+    "cardarine": {
+        "name": "GW501516 (Cardarine)",
+        "category": "PPAR_delta_agonist",
+        "risk": "high",
+        "effects": ["potential carcinogenicity"],
+        "notes": "",
+    },
     # Pro-Hormones
-    "dmz": {"name": "DMZ (Dymethazine)", "category": "pro_hormone", "risk": "very_high",
-            "effects": ["severe hepatotoxicity (17α-alkylated)", "complete HPTA suppression",
-                        "HDL destruction", "blood pressure increase"],
-            "notes": "True steroid, one of the most hepatotoxic oral compounds"},
-    "g-mass": {"name": "G-Mass (Animal Factory)", "category": "pro_hormone", "risk": "high",
-               "effects": ["hepatotoxicity", "HPTA suppression", "lipid alteration"], "notes": ""},
-    "veno test": {"name": "Veno Test (Core Labs)", "category": "testosterone_booster", "risk": "medium",
-                  "effects": ["possible mild HPTA modulation"], "notes": ""},
-
+    "dmz": {
+        "name": "DMZ (Dymethazine)",
+        "category": "pro_hormone",
+        "risk": "very_high",
+        "effects": [
+            "severe hepatotoxicity (17α-alkylated)",
+            "complete HPTA suppression",
+            "HDL destruction",
+            "blood pressure increase",
+        ],
+        "notes": "True steroid, one of the most hepatotoxic oral compounds",
+    },
+    "g-mass": {
+        "name": "G-Mass (Animal Factory)",
+        "category": "pro_hormone",
+        "risk": "high",
+        "effects": ["hepatotoxicity", "HPTA suppression", "lipid alteration"],
+        "notes": "",
+    },
+    "veno test": {
+        "name": "Veno Test (Core Labs)",
+        "category": "testosterone_booster",
+        "risk": "medium",
+        "effects": ["possible mild HPTA modulation"],
+        "notes": "",
+    },
     # PCT
-    "test restore": {"name": "Test Restore AM (Revange)", "category": "PCT", "risk": "low-medium",
-                     "effects": ["estrogen modulation"], "notes": "Post-cycle therapy"},
-    "pct pro": {"name": "PCT PRO (Core Labs)", "category": "PCT", "risk": "medium",
-                "effects": ["HPTA recovery support", "estrogen modulation"],
-                "notes": "If used long after last cycle, may indicate incomplete recovery"},
-    "alpha male": {"name": "Alpha Male (Revange)", "category": "PCT", "risk": "medium",
-                   "effects": ["anti-estrogenic", "testosterone support"], "notes": ""},
-    "turkester": {"name": "Turkesterone 650 (Hi-Tech)", "category": "ecdysteroid", "risk": "low",
-                  "effects": ["mild anabolic support"], "notes": "Plant-based, generally safe"},
-
+    "test restore": {
+        "name": "Test Restore AM (Revange)",
+        "category": "PCT",
+        "risk": "low-medium",
+        "effects": ["estrogen modulation"],
+        "notes": "Post-cycle therapy",
+    },
+    "pct pro": {
+        "name": "PCT PRO (Core Labs)",
+        "category": "PCT",
+        "risk": "medium",
+        "effects": ["HPTA recovery support", "estrogen modulation"],
+        "notes": "If used long after last cycle, may indicate incomplete recovery",
+    },
+    "alpha male": {
+        "name": "Alpha Male (Revange)",
+        "category": "PCT",
+        "risk": "medium",
+        "effects": ["anti-estrogenic", "testosterone support"],
+        "notes": "",
+    },
+    "turkester": {
+        "name": "Turkesterone 650 (Hi-Tech)",
+        "category": "ecdysteroid",
+        "risk": "low",
+        "effects": ["mild anabolic support"],
+        "notes": "Plant-based, generally safe",
+    },
     # Liver support
-    "liver": {"name": "Liver (Revange)", "category": "liver_support", "risk": "low",
-              "effects": ["hepatoprotective"], "notes": "Protective, should be used during hepatotoxic cycles"},
-
+    "liver": {
+        "name": "Liver (Revange)",
+        "category": "liver_support",
+        "risk": "low",
+        "effects": ["hepatoprotective"],
+        "notes": "Protective, should be used during hepatotoxic cycles",
+    },
     # Thermogenics / Fat burners
-    "ripper": {"name": "Ripper (Skull Labs)", "category": "thermogenic", "risk": "medium",
-               "effects": ["stimulant stress", "cardiovascular load", "appetite suppression"],
-               "notes": "High stimulant content"},
-    "laser melt": {"name": "Laser Melt (Toxic Pharma)", "category": "thermogenic", "risk": "medium",
-                   "effects": ["stimulant stress", "pre-workout energy"], "notes": ""},
-    "animal cuts": {"name": "Animal Cuts (Universal)", "category": "thermogenic", "risk": "medium",
-                    "effects": ["stimulant load", "thermogenesis"], "notes": ""},
-    "yohimbine": {"name": "Yohimbine HCL", "category": "fat_burner", "risk": "medium",
-                  "effects": ["alpha-2 antagonist", "cardiovascular stress", "anxiety", "blood pressure increase"],
-                  "notes": "Potent fat burner, significant side effects in sensitive individuals"},
-
+    "ripper": {
+        "name": "Ripper (Skull Labs)",
+        "category": "thermogenic",
+        "risk": "medium",
+        "effects": ["stimulant stress", "cardiovascular load", "appetite suppression"],
+        "notes": "High stimulant content",
+    },
+    "laser melt": {
+        "name": "Laser Melt (Toxic Pharma)",
+        "category": "thermogenic",
+        "risk": "medium",
+        "effects": ["stimulant stress", "pre-workout energy"],
+        "notes": "",
+    },
+    "animal cuts": {
+        "name": "Animal Cuts (Universal)",
+        "category": "thermogenic",
+        "risk": "medium",
+        "effects": ["stimulant load", "thermogenesis"],
+        "notes": "",
+    },
+    "yohimbine": {
+        "name": "Yohimbine HCL",
+        "category": "fat_burner",
+        "risk": "medium",
+        "effects": [
+            "alpha-2 antagonist",
+            "cardiovascular stress",
+            "anxiety",
+            "blood pressure increase",
+        ],
+        "notes": "Potent fat burner, significant side effects in sensitive individuals",
+    },
     # Base supplements
-    "creatina": {"name": "Creatina Monoidrato", "category": "base", "risk": "very_low",
-                 "effects": ["strength", "muscle volume", "neuroprotection"], "notes": "Extensively studied, safe"},
-    "glutammina": {"name": "Glutammina", "category": "base", "risk": "very_low",
-                   "effects": ["recovery", "immune support", "gut health"], "notes": ""},
-    "acetilcarnitina": {"name": "Acetil-L-Carnitina", "category": "base", "risk": "very_low",
-                        "effects": ["fat oxidation", "cognitive support"], "notes": ""},
-    "bcaa": {"name": "BCAA", "category": "base", "risk": "very_low",
-             "effects": ["muscle recovery"], "notes": ""},
-    "omega": {"name": "Omega 3", "category": "base", "risk": "very_low",
-              "effects": ["anti-inflammatory", "cardiovascular support", "lipid improvement"], "notes": ""},
-    "acido lipoico": {"name": "Acido Alfa-Lipoico", "category": "base", "risk": "very_low",
-                      "effects": ["antioxidant", "insulin sensitivity"], "notes": ""},
-    "cla": {"name": "CLA", "category": "base", "risk": "very_low",
-            "effects": ["body composition support"], "notes": ""},
-    "vsl3": {"name": "VSL#3", "category": "probiotic", "risk": "very_low",
-             "effects": ["gut health", "immune support"], "notes": ""},
-    "magnesio": {"name": "Magnesio Potassio", "category": "base", "risk": "very_low",
-                 "effects": ["electrolyte balance", "recovery"], "notes": ""},
+    "creatina": {
+        "name": "Creatina Monoidrato",
+        "category": "base",
+        "risk": "very_low",
+        "effects": ["strength", "muscle volume", "neuroprotection"],
+        "notes": "Extensively studied, safe",
+    },
+    "glutammina": {
+        "name": "Glutammina",
+        "category": "base",
+        "risk": "very_low",
+        "effects": ["recovery", "immune support", "gut health"],
+        "notes": "",
+    },
+    "acetilcarnitina": {
+        "name": "Acetil-L-Carnitina",
+        "category": "base",
+        "risk": "very_low",
+        "effects": ["fat oxidation", "cognitive support"],
+        "notes": "",
+    },
+    "bcaa": {
+        "name": "BCAA",
+        "category": "base",
+        "risk": "very_low",
+        "effects": ["muscle recovery"],
+        "notes": "",
+    },
+    "omega": {
+        "name": "Omega 3",
+        "category": "base",
+        "risk": "very_low",
+        "effects": ["anti-inflammatory", "cardiovascular support", "lipid improvement"],
+        "notes": "",
+    },
+    "acido lipoico": {
+        "name": "Acido Alfa-Lipoico",
+        "category": "base",
+        "risk": "very_low",
+        "effects": ["antioxidant", "insulin sensitivity"],
+        "notes": "",
+    },
+    "cla": {
+        "name": "CLA",
+        "category": "base",
+        "risk": "very_low",
+        "effects": ["body composition support"],
+        "notes": "",
+    },
+    "vsl3": {
+        "name": "VSL#3",
+        "category": "probiotic",
+        "risk": "very_low",
+        "effects": ["gut health", "immune support"],
+        "notes": "",
+    },
+    "magnesio": {
+        "name": "Magnesio Potassio",
+        "category": "base",
+        "risk": "very_low",
+        "effects": ["electrolyte balance", "recovery"],
+        "notes": "",
+    },
 }
 
 # Keywords for supplement line detection
 SUPP_KEYWORDS = [
-    'rad 140', 'rad140', 'mk-677', 'mk677', 'mk2866', 'mk-2866', 'gw501516',
-    'ostarine', 'cardarine', 'lgd', 'sarm',
-    'creatina', 'glutammina', 'bcaa', 'omega', 'vitamina', 'multivit',
-    'carnitin', 'acetilcarnitin', 'acido lipoico', 'cla',
-    'ripper', 'skull lab', 'laser melt', 'toxic pharma',
-    'test restore', 'turkester', 'pct pro',
-    'liver', 'revange', 'core lab', 'veno test', 'lx-gh',
-    'animal factory', 'animal cuts', 'g-mass', 'alpha male',
-    'dmz', 'yohimbine', 'yohimb',
-    'swiss', 'yamamoto', 'flexotor',
-    'euphoriq', 'muscletech', 'c4', 'cellucor',
-    'black focus', 'acid melt', 'hazard',
-    'magnesio potassio', 'swisse', 'vsl3', 'vsl',
-    'mister hyde', 'pro supps',
+    "rad 140",
+    "rad140",
+    "mk-677",
+    "mk677",
+    "mk2866",
+    "mk-2866",
+    "gw501516",
+    "ostarine",
+    "cardarine",
+    "lgd",
+    "sarm",
+    "creatina",
+    "glutammina",
+    "bcaa",
+    "omega",
+    "vitamina",
+    "multivit",
+    "carnitin",
+    "acetilcarnitin",
+    "acido lipoico",
+    "cla",
+    "ripper",
+    "skull lab",
+    "laser melt",
+    "toxic pharma",
+    "test restore",
+    "turkester",
+    "pct pro",
+    "liver",
+    "revange",
+    "core lab",
+    "veno test",
+    "lx-gh",
+    "animal factory",
+    "animal cuts",
+    "g-mass",
+    "alpha male",
+    "dmz",
+    "yohimbine",
+    "yohimb",
+    "swiss",
+    "yamamoto",
+    "flexotor",
+    "euphoriq",
+    "muscletech",
+    "c4",
+    "cellucor",
+    "black focus",
+    "acid melt",
+    "hazard",
+    "magnesio potassio",
+    "swisse",
+    "vsl3",
+    "vsl",
+    "mister hyde",
+    "pro supps",
 ]
 
 # Keywords indicating a supplement/protocol line (not food)
 SUPP_CONTEXT_KEYWORDS = [
-    'pre-all', 'post-all', 'pre-col', 'pre-sonno', 'pre-pranzo', 'pre-cena',
-    'colaz.', 'a colaz', 'a pranzo', 'a cena',
-    'cps', 'caps', 'mg', 'misurino', 'bustine', 'bustina', 'compresse',
-    'settiman', 'stripping',
+    "pre-all",
+    "post-all",
+    "pre-col",
+    "pre-sonno",
+    "pre-pranzo",
+    "pre-cena",
+    "colaz.",
+    "a colaz",
+    "a pranzo",
+    "a cena",
+    "cps",
+    "caps",
+    "mg",
+    "misurino",
+    "bustine",
+    "bustina",
+    "compresse",
+    "settiman",
+    "stripping",
 ]
 
 
@@ -159,13 +375,20 @@ def detect_phase(program_data, prev_weight=None):
 
     supp_text = " ".join(supps).lower()
 
-    has_sarm = any(k in supp_text for k in ['rad 140', 'rad140', 'mk2866', 'ostarine', 'lgd'])
-    has_ph = any(k in supp_text for k in ['dmz', 'g-mass'])
-    has_gh = any(k in supp_text for k in ['mk-677', 'mk677', 'lx-gh'])
-    has_pct = any(k in supp_text for k in ['pct pro', 'test restore', 'alpha male', 'turkester'])
-    has_thermo = any(k in supp_text for k in ['ripper', 'animal cuts', 'yohimbine', 'yohimb', 'laser melt'])
-    has_liver = 'liver' in supp_text
-    has_fat_burner = any(k in supp_text for k in ['carnitin', 'cla', 'acido lipoico'])
+    has_sarm = any(
+        k in supp_text for k in ["rad 140", "rad140", "mk2866", "ostarine", "lgd"]
+    )
+    has_ph = any(k in supp_text for k in ["dmz", "g-mass"])
+    has_gh = any(k in supp_text for k in ["mk-677", "mk677", "lx-gh"])
+    has_pct = any(
+        k in supp_text for k in ["pct pro", "test restore", "alpha male", "turkester"]
+    )
+    has_thermo = any(
+        k in supp_text
+        for k in ["ripper", "animal cuts", "yohimbine", "yohimb", "laser melt"]
+    )
+    has_liver = "liver" in supp_text
+    has_fat_burner = any(k in supp_text for k in ["carnitin", "cla", "acido lipoico"])
 
     weight_change = None
     if weight and prev_weight:
@@ -232,12 +455,14 @@ def extract_program_data(dirpath, program_num):
     }
 
     files = os.listdir(dirpath)
-    pdfs = [f for f in files if f.endswith('.pdf')]
-    docxs = [f for f in files if f.endswith('.docx')]
+    pdfs = [f for f in files if f.endswith(".pdf")]
+    docxs = [f for f in files if f.endswith(".docx")]
 
     # Separate nutrition vs training PDFs
-    nutrition_pdfs = [f for f in pdfs if 'all' not in f.lower() or f.lower().count('all') == 0]
-    training_pdfs = [f for f in pdfs if 'all.' in f.lower() or '(all' in f.lower()]
+    nutrition_pdfs = [
+        f for f in pdfs if "all" not in f.lower() or f.lower().count("all") == 0
+    ]
+    training_pdfs = [f for f in pdfs if "all." in f.lower() or "(all" in f.lower()]
 
     # If no clear separation, try all PDFs
     if not nutrition_pdfs:
@@ -254,58 +479,60 @@ def extract_program_data(dirpath, program_num):
                     if t:
                         full_text += t + "\n"
 
-                lines = full_text.split('\n')
+                lines = full_text.split("\n")
 
                 for line in lines:
                     # Date
-                    m = re.search(r'DATA\s+(\d{1,2}/\d{1,2}/\d{4})', line)
+                    m = re.search(r"DATA\s+(\d{1,2}/\d{1,2}/\d{4})", line)
                     if m and not result["date"]:
                         result["date"] = m.group(1)
                         try:
-                            result["date_iso"] = datetime.strptime(m.group(1), "%d/%m/%Y").strftime("%Y-%m-%d")
+                            result["date_iso"] = datetime.strptime(
+                                m.group(1), "%d/%m/%Y"
+                            ).strftime("%Y-%m-%d")
                         except:
                             pass
 
                     # Weight
-                    m = re.search(r'Peso tot\.\s*\(kg\)\s*([\d.,]+)', line)
+                    m = re.search(r"Peso tot\.\s*\(kg\)\s*([\d.,]+)", line)
                     if m:
-                        result["weight"] = float(m.group(1).replace(',', '.'))
+                        result["weight"] = float(m.group(1).replace(",", "."))
 
                     # Body fat
                     # Look for the current measurement - usually on the body comp page
-                    m = re.search(r'Peso massa grassa\s*\(kg\)\s*([\d.,]+)', line)
+                    m = re.search(r"Peso massa grassa\s*\(kg\)\s*([\d.,]+)", line)
                     if m:
-                        result["fat_mass"] = float(m.group(1).replace(',', '.'))
+                        result["fat_mass"] = float(m.group(1).replace(",", "."))
 
-                    m = re.search(r'Peso massa magra\s*\(kg\)\s*([\d.,]+)', line)
+                    m = re.search(r"Peso massa magra\s*\(kg\)\s*([\d.,]+)", line)
                     if m:
-                        result["lean_mass"] = float(m.group(1).replace(',', '.'))
+                        result["lean_mass"] = float(m.group(1).replace(",", "."))
 
-                    m = re.search(r'BMI\s+([\d.,]+)', line)
+                    m = re.search(r"BMI\s+([\d.,]+)", line)
                     if m and not result["bmi"]:
                         try:
-                            val = float(m.group(1).replace(',', '.'))
+                            val = float(m.group(1).replace(",", "."))
                             if 15 < val < 45:  # sanity check
                                 result["bmi"] = val
                         except:
                             pass
 
                     # Waist
-                    m = re.search(r'Vita\s+(\d{2,3})$', line.strip())
+                    m = re.search(r"Vita\s+(\d{2,3})$", line.strip())
                     if m:
                         result["waist"] = int(m.group(1))
 
                     # Objective
-                    m = re.search(r'[Oo]biettivo[:\s]*([\d.,]+)\s*kg', line)
+                    m = re.search(r"[Oo]biettivo[:\s]*([\d.,]+)\s*kg", line)
                     if m:
-                        result["objective"] = float(m.group(1).replace(',', '.'))
+                        result["objective"] = float(m.group(1).replace(",", "."))
 
-                    m = re.search(r'Prossimo obiettivo[:\s]*([\d.,]+)\s*kg', line)
+                    m = re.search(r"Prossimo obiettivo[:\s]*([\d.,]+)\s*kg", line)
                     if m:
-                        result["objective"] = float(m.group(1).replace(',', '.'))
+                        result["objective"] = float(m.group(1).replace(",", "."))
 
                     # Valid until
-                    m = re.search(r'Fino al\s+(.+?)$', line.strip())
+                    m = re.search(r"Fino al\s+(.+?)$", line.strip())
                     if m:
                         result["valid_until"] = m.group(1).strip()
 
@@ -317,10 +544,25 @@ def extract_program_data(dirpath, program_num):
                     for kw in SUPP_KEYWORDS:
                         if kw in low:
                             # Exclude pure food lines
-                            if not any(food in low for food in ['pancake', 'porridge', 'secondo', 'nota secondi',
-                                                                  'carne rossa', 'carne bianca', 'pesce magro',
-                                                                  'pesce azzurro', 'formaggio', 'ricotta',
-                                                                  'seppie', 'gamberi', 'calamari', 'polipo']):
+                            if not any(
+                                food in low
+                                for food in [
+                                    "pancake",
+                                    "porridge",
+                                    "secondo",
+                                    "nota secondi",
+                                    "carne rossa",
+                                    "carne bianca",
+                                    "pesce magro",
+                                    "pesce azzurro",
+                                    "formaggio",
+                                    "ricotta",
+                                    "seppie",
+                                    "gamberi",
+                                    "calamari",
+                                    "polipo",
+                                ]
+                            ):
                                 is_supp_line = True
                                 break
 
@@ -334,23 +576,33 @@ def extract_program_data(dirpath, program_num):
                     if is_supp_line:
                         clean_line = line.strip()
                         # Skip nutritional plan structure lines
-                        if not re.match(r'^(Col\.|Sp\.\s*\d|Pranzo|Cena|GIORNO|LUNEDI|MARTEDI|MERCOLEDI|GIOVEDI|VENERDI|SABATO|DOMENICA)', clean_line):
+                        if not re.match(
+                            r"^(Col\.|Sp\.\s*\d|Pranzo|Cena|GIORNO|LUNEDI|MARTEDI|MERCOLEDI|GIOVEDI|VENERDI|SABATO|DOMENICA)",
+                            clean_line,
+                        ):
                             result["supplements_raw"].append(clean_line)
-                        elif 'post-all' in low or 'pre-all' in low or 'pre-col' in low:
+                        elif "post-all" in low or "pre-all" in low or "pre-col" in low:
                             result["supplements_raw"].append(clean_line)
 
                     # Cardio
-                    if any(k in low for k in ['cardio', 'tappeto', 'nuoto', 'glidex', 'camminat']):
+                    if any(
+                        k in low
+                        for k in ["cardio", "tappeto", "nuoto", "glidex", "camminat"]
+                    ):
                         result["has_cardio"] = True
                         result["cardio_detail"] = line.strip()
 
                     # Carb info
-                    if re.search(r'pasta|riso|avena|fiocchi', low):
-                        m_carb = re.search(r'(\d+)\s*g\s*(pasta|riso|avena|fiocchi)', low)
+                    if re.search(r"pasta|riso|avena|fiocchi", low):
+                        m_carb = re.search(
+                            r"(\d+)\s*g\s*(pasta|riso|avena|fiocchi)", low
+                        )
                         if m_carb:
                             if "carb_details" not in result:
                                 result["carb_details"] = ""
-                            result["carb_details"] += f"{m_carb.group(1)}g {m_carb.group(2)}; "
+                            result[
+                                "carb_details"
+                            ] += f"{m_carb.group(1)}g {m_carb.group(2)}; "
 
                 # Classify supplements
                 seen_names = set()
@@ -359,13 +611,15 @@ def extract_program_data(dirpath, program_num):
                     for c in classifications:
                         if c["name"] not in seen_names:
                             seen_names.add(c["name"])
-                            result["supplements_classified"].append({
-                                "name": c["name"],
-                                "category": c["category"],
-                                "risk": c["risk"],
-                                "effects": c["effects"],
-                                "protocol": supp_line,
-                            })
+                            result["supplements_classified"].append(
+                                {
+                                    "name": c["name"],
+                                    "category": c["category"],
+                                    "risk": c["risk"],
+                                    "effects": c["effects"],
+                                    "protocol": supp_line,
+                                }
+                            )
 
         except Exception as e:
             result["notes"].append(f"Error reading {pdf_name}: {str(e)}")
@@ -382,28 +636,33 @@ def extract_program_data(dirpath, program_num):
                         full_text += t + "\n"
 
                 # Count training days
-                days = re.findall(r'^([A-D])\s*$', full_text, re.MULTILINE)
-                result["training_summary"]["split_days"] = len(set(days)) if days else None
+                days = re.findall(r"^([A-D])\s*$", full_text, re.MULTILINE)
+                result["training_summary"]["split_days"] = (
+                    len(set(days)) if days else None
+                )
 
                 # Cardio from training PDF
                 low = full_text.lower()
-                if any(k in low for k in ['cardio', 'tappeto', 'nuoto', 'glidex']):
+                if any(k in low for k in ["cardio", "tappeto", "nuoto", "glidex"]):
                     result["has_cardio"] = True
-                    for line in full_text.split('\n'):
-                        if any(k in line.lower() for k in ['cardio', 'tappeto', 'nuoto', 'glidex']):
+                    for line in full_text.split("\n"):
+                        if any(
+                            k in line.lower()
+                            for k in ["cardio", "tappeto", "nuoto", "glidex"]
+                        ):
                             result["cardio_detail"] = line.strip()
 
                 # Detect intensity techniques
                 techniques = []
-                if 'stripping' in low:
+                if "stripping" in low:
                     techniques.append("stripping")
-                if 'neg.' in low or 'negativ' in low:
+                if "neg." in low or "negativ" in low:
                     techniques.append("negative")
-                if 'superserie' in low or 'In rosso' in full_text:
+                if "superserie" in low or "In rosso" in full_text:
                     techniques.append("superserie")
-                if 'parziali' in low:
+                if "parziali" in low:
                     techniques.append("parziali")
-                if 'pausa e stretch' in low:
+                if "pausa e stretch" in low:
                     techniques.append("rest-pause + stretch")
                 result["training_summary"]["intensity_techniques"] = techniques
 
@@ -420,9 +679,9 @@ def extract_body_comp_history(dirpath):
     """Extract the full historical body composition table from the most recent program."""
     history = []
     files = os.listdir(dirpath)
-    pdfs = [f for f in files if f.endswith('.pdf') and 'all' not in f.lower()]
+    pdfs = [f for f in files if f.endswith(".pdf") and "all" not in f.lower()]
     if not pdfs:
-        pdfs = [f for f in files if f.endswith('.pdf')]
+        pdfs = [f for f in files if f.endswith(".pdf")]
 
     for pdf_name in pdfs:
         filepath = os.path.join(dirpath, pdf_name)
@@ -434,49 +693,53 @@ def extract_body_comp_history(dirpath):
                     if t:
                         full_text += t + "\n"
 
-                lines = full_text.split('\n')
+                lines = full_text.split("\n")
                 i = 0
                 while i < len(lines):
                     # Look for date rows (7 dates)
-                    date_match = re.findall(r'\d{2}/\d{2}/\d{4}', lines[i])
+                    date_match = re.findall(r"\d{2}/\d{2}/\d{4}", lines[i])
                     if len(date_match) >= 3:
                         dates = date_match
                         # Next lines should be Peso, % grasso, FM, FFM, Vita
                         data_block = {}
                         for j in range(i + 1, min(i + 6, len(lines))):
                             line = lines[j]
-                            if line.startswith('Peso ') or line.startswith('Peso\t'):
-                                vals = re.findall(r'[\d.]+', line)
-                                data_block['peso'] = vals
-                            elif '% grasso' in line or '%grasso' in line:
-                                vals = re.findall(r'[\d.]+', line)
-                                data_block['grasso'] = vals
-                            elif line.startswith('FM ') or line.startswith('FM\t'):
-                                vals = re.findall(r'[\d.]+', line)
-                                data_block['fm'] = vals
-                            elif line.startswith('FFM ') or line.startswith('FFM\t'):
-                                vals = re.findall(r'[\d.]+', line)
-                                data_block['ffm'] = vals
-                            elif line.startswith('Vita ') or line.startswith('Vita\t'):
-                                vals = re.findall(r'\d+', line)
-                                data_block['vita'] = vals
+                            if line.startswith("Peso ") or line.startswith("Peso\t"):
+                                vals = re.findall(r"[\d.]+", line)
+                                data_block["peso"] = vals
+                            elif "% grasso" in line or "%grasso" in line:
+                                vals = re.findall(r"[\d.]+", line)
+                                data_block["grasso"] = vals
+                            elif line.startswith("FM ") or line.startswith("FM\t"):
+                                vals = re.findall(r"[\d.]+", line)
+                                data_block["fm"] = vals
+                            elif line.startswith("FFM ") or line.startswith("FFM\t"):
+                                vals = re.findall(r"[\d.]+", line)
+                                data_block["ffm"] = vals
+                            elif line.startswith("Vita ") or line.startswith("Vita\t"):
+                                vals = re.findall(r"\d+", line)
+                                data_block["vita"] = vals
 
                         for idx, date in enumerate(dates):
                             entry = {"date": date}
                             try:
-                                entry["date_iso"] = datetime.strptime(date, "%d/%m/%Y").strftime("%Y-%m-%d")
+                                entry["date_iso"] = datetime.strptime(
+                                    date, "%d/%m/%Y"
+                                ).strftime("%Y-%m-%d")
                             except:
                                 pass
-                            if 'peso' in data_block and idx < len(data_block['peso']):
-                                entry['weight'] = float(data_block['peso'][idx])
-                            if 'grasso' in data_block and idx < len(data_block['grasso']):
-                                entry['body_fat_pct'] = float(data_block['grasso'][idx])
-                            if 'fm' in data_block and idx < len(data_block['fm']):
-                                entry['fat_mass'] = float(data_block['fm'][idx])
-                            if 'ffm' in data_block and idx < len(data_block['ffm']):
-                                entry['lean_mass'] = float(data_block['ffm'][idx])
-                            if 'vita' in data_block and idx < len(data_block['vita']):
-                                entry['waist'] = int(data_block['vita'][idx])
+                            if "peso" in data_block and idx < len(data_block["peso"]):
+                                entry["weight"] = float(data_block["peso"][idx])
+                            if "grasso" in data_block and idx < len(
+                                data_block["grasso"]
+                            ):
+                                entry["body_fat_pct"] = float(data_block["grasso"][idx])
+                            if "fm" in data_block and idx < len(data_block["fm"]):
+                                entry["fat_mass"] = float(data_block["fm"][idx])
+                            if "ffm" in data_block and idx < len(data_block["ffm"]):
+                                entry["lean_mass"] = float(data_block["ffm"][idx])
+                            if "vita" in data_block and idx < len(data_block["vita"]):
+                                entry["waist"] = int(data_block["vita"][idx])
                             history.append(entry)
                         i += 6
                     else:
@@ -488,12 +751,12 @@ def extract_body_comp_history(dirpath):
     seen = set()
     unique = []
     for h in history:
-        if h['date'] not in seen:
-            seen.add(h['date'])
+        if h["date"] not in seen:
+            seen.add(h["date"])
             unique.append(h)
 
     # Sort by date
-    unique.sort(key=lambda x: x.get('date_iso', ''))
+    unique.sort(key=lambda x: x.get("date_iso", ""))
     return unique
 
 
@@ -588,7 +851,8 @@ def compute_risk_summary(all_programs):
     if last_ped_date and last_pct_date:
         if last_pct_date > last_ped_date:
             risk["hpta"]["notes"].append(
-                f"PCT ({last_pct_date}) used after last PED cycle ({last_ped_date}) — may indicate ongoing recovery issues")
+                f"PCT ({last_pct_date}) used after last PED cycle ({last_ped_date}) — may indicate ongoing recovery issues"
+            )
 
     risk["summary"] = {
         "total_sarm_cycles": sarm_cycles,
@@ -601,11 +865,21 @@ def compute_risk_summary(all_programs):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Extract nutritional program data from PDFs")
-    parser.add_argument("base_dir", help="Base directory containing #XX_programmi folders")
+    parser = argparse.ArgumentParser(
+        description="Extract nutritional program data from PDFs"
+    )
+    parser.add_argument(
+        "base_dir", help="Base directory containing #XX_programmi folders"
+    )
     parser.add_argument("--output", "-o", default=None, help="Output JSON file path")
-    parser.add_argument("--range", nargs=2, type=int, default=None, help="Program range (start end)")
-    parser.add_argument("--history", action="store_true", help="Also extract full body comp history from latest program")
+    parser.add_argument(
+        "--range", nargs=2, type=int, default=None, help="Program range (start end)"
+    )
+    parser.add_argument(
+        "--history",
+        action="store_true",
+        help="Also extract full body comp history from latest program",
+    )
     args = parser.parse_args()
 
     base_dir = args.base_dir
@@ -613,7 +887,7 @@ def main():
     # Find all program directories
     dirs = []
     for d in os.listdir(base_dir):
-        m = re.match(r'#(\d+)_programm', d)
+        m = re.match(r"#(\d+)_programm", d)
         if m:
             num = int(m.group(1))
             if args.range:
@@ -651,7 +925,10 @@ def main():
     if args.history and dirs:
         latest_dir = dirs[-1][1]
         body_comp_history = extract_body_comp_history(latest_dir)
-        print(f"  Extracted {len(body_comp_history)} historical data points", file=sys.stderr)
+        print(
+            f"  Extracted {len(body_comp_history)} historical data points",
+            file=sys.stderr,
+        )
 
     output = {
         "extraction_date": datetime.now().strftime("%Y-%m-%d %H:%M"),
@@ -666,7 +943,7 @@ def main():
     }
 
     if args.output:
-        with open(args.output, 'w', encoding='utf-8') as f:
+        with open(args.output, "w", encoding="utf-8") as f:
             json.dump(output, f, ensure_ascii=False, indent=2)
         print(f"Output saved to {args.output}", file=sys.stderr)
     else:

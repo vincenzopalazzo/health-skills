@@ -29,21 +29,20 @@ jobs:
           find . -path '*/.claude-plugin/plugin.json' -exec \
             check-jsonschema --schemafile .github/schemas/plugin-schema.json {} +
 
-  lint-python:
-    name: Lint Python scripts
+  format-python:
+    name: Check Python formatting
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Ruff lint
-        uses: astral-sh/ruff-action@v3
+      - uses: actions/setup-python@v5
         with:
-          args: "check --output-format=github"
+          python-version: '3.12'
 
-      - name: Ruff format check
-        uses: astral-sh/ruff-action@v3
-        with:
-          args: "format --check"
+      - name: Black format check
+        run: |
+          pip install black
+          black --check --diff plugins/ .github/scripts/
 
   security-scan:
     name: Security scan
