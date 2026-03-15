@@ -1,8 +1,8 @@
-# skills
+# health-skills
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-A collection of personal AI [skills](https://support.claude.com/en/articles/12512176-what-are-skills) — installable as a Claude Code plugin marketplace and compatible with [Goose](https://block.github.io/goose/).
+[Skills](https://support.claude.com/en/articles/12512176-what-are-skills) that give Claude persistent knowledge about your life — health data, nutrition programs, training history — so it can be a real assistant, not just a chatbot. Compatible with [Goose](https://block.github.io/goose/).
 
 ## Available Skills
 
@@ -17,22 +17,22 @@ A collection of personal AI [skills](https://support.claude.com/en/articles/1251
 **Marketplace:**
 
 ```
-/plugin marketplace add vincenzopalazzo/skills
-/plugin install corpo@vincenzopalazzo-skills
+/plugin marketplace add vincenzopalazzo/health-skills
+/plugin install corpo@vincenzopalazzo-health-skills
 ```
 
 **Manual (global):**
 
 ```bash
-git clone https://github.com/vincenzopalazzo/skills.git
-cp -r skills/plugins/corpo/.claude-plugin/skills/corpo ~/.claude/skills/corpo
+git clone https://github.com/vincenzopalazzo/health-skills.git
+cp -r health-skills/plugins/corpo/.claude-plugin/skills/corpo ~/.claude/skills/corpo
 ```
 
 **Project-level:**
 
 ```bash
 mkdir -p .claude/skills
-cp -r skills/plugins/corpo/.claude-plugin/skills/corpo .claude/skills/corpo
+cp -r health-skills/plugins/corpo/.claude-plugin/skills/corpo .claude/skills/corpo
 ```
 
 ### Goose
@@ -51,21 +51,21 @@ This repo includes a `skills/` directory at the root that follows the [Goose ski
 **Global install (Goose-specific):**
 
 ```bash
-git clone https://github.com/vincenzopalazzo/skills.git
-cp -r skills/skills/corpo ~/.config/goose/skills/corpo
+git clone https://github.com/vincenzopalazzo/health-skills.git
+cp -r health-skills/skills/corpo ~/.config/goose/skills/corpo
 ```
 
 **Global install (portable across agents):**
 
 ```bash
-cp -r skills/skills/corpo ~/.config/agents/skills/corpo
+cp -r health-skills/skills/corpo ~/.config/agents/skills/corpo
 ```
 
 **Project-level:**
 
 ```bash
 mkdir -p .goose/skills
-cp -r skills/skills/corpo .goose/skills/corpo
+cp -r health-skills/skills/corpo .goose/skills/corpo
 ```
 
 ## Repo Structure

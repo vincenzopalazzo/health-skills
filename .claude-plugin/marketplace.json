@@ -1,5 +1,5 @@
 {
-  "name": "vincenzopalazzo-skills",
+  "name": "vincenzopalazzo-health-skills",
   "owner": {
     "name": "Vincenzo Palazzo"
   },
@@ -7,7 +7,7 @@
     {
       "name": "corpo",
       "source": "./plugins/corpo",
-      "description": "Body recomposition tracker — parses nutritional/training program PDFs, tracks body composition over time, manages supplement cycles with health risk assessment, integrates Garmin wearable data, and generates interactive health dashboards.",
+      "description": "Personal health assistant — indexes your nutritional programs, training plans, supplement cycles, and body composition history so Claude can search, cross-reference, and provide health guidance within any conversation.",
       "tags": ["fitness", "nutrition", "garmin", "health", "body-composition"]
     }
   ]
