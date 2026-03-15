@@ -1,0 +1,62 @@
+name: Skills CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    paths:
+      - 'plugins/**'
+      - 'skills/**'
+      - '.github/**'
+
+jobs:
+  validate-structure:
+    name: Validate plugin structure & skills
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate SKILL.md frontmatter & plugin.json
+        run: python3 .github/scripts/validate-skills.py
+
+      - name: Validate plugin.json against schema
+        run: |
+          pip install check-jsonschema
+          find . -path '*/.claude-plugin/plugin.json' -exec \
+            check-jsonschema --schemafile .github/schemas/plugin-schema.json {} +
+
+  lint-python:
+    name: Lint Python scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ruff lint
+        uses: astral-sh/ruff-action@v3
+        with:
+          args: "check --output-format=github"
+
+      - name: Ruff format check
+        uses: astral-sh/ruff-action@v3
+        with:
+          args: "format --check"
+
+  security-scan:
+    name: Security scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Bandit security scan
+        run: |
+          pip install bandit
+          bandit -r plugins/ -x '**/test_*' --severity-level medium \
+            --skip B603,B404 || true

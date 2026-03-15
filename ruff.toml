@@ -1,0 +1,14 @@
+target-version = "py310"
+line-length = 120
+
+[lint]
+select = ["E", "F", "W", "I", "UP", "S", "B"]
+ignore = [
+    "S603",  # subprocess calls (expected in skill scripts)
+    "S404",  # import subprocess
+    "S101",  # assert usage
+    "E501",  # line length (handled by formatter)
+]
+
+[lint.per-file-ignores]
+"**/scripts/*.py" = ["S"]  # security warnings less relevant for local scripts
