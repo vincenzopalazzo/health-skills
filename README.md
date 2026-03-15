@@ -95,6 +95,10 @@ The `skills/` directory is a symlink-based mirror of the canonical skill files u
 
 More skills will be added over time. Each skill lives under `plugins/<skill-name>/` with a corresponding symlink in `skills/` for Goose compatibility.
 
+## Inspiration
+
+This project was inspired by the idea of giving AI agents domain-specific health knowledge — see the [original thread](https://x.com/PalazzoVincenzo/status/2032796504360996911).
+
 ## License
 
 Apache 2.0 — Copyright Vincenzo Palazzo
