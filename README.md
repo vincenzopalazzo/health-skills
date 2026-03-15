@@ -4,7 +4,7 @@
 
 [Skills](https://support.claude.com/en/articles/12512176-what-are-skills) that give Claude persistent knowledge about your life — health data, nutrition programs, training history — so it can be a real assistant, not just a chatbot. Compatible with [Goose](https://block.github.io/goose/).
 
-> **Note:** These skills are designed to run inside a [Claude Code](https://docs.anthropic.com/en/docs/claude-code) session, where Claude has access to your local filesystem and can read, search, and cross-reference your health data on the fly. They won't do much from the web UI or API alone.
+> **Note:** These skills are designed to run inside a [Claude Cowork](https://docs.anthropic.com/en/docs/claude-code) session, where Claude has access to your local filesystem and can read, search, and cross-reference your health data on the fly. They won't do much from the web UI or API alone.
 
 ## Available Skills
 
