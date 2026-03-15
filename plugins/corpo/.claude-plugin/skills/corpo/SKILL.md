@@ -1,20 +1,28 @@
 ---
 name: corpo
 description: >
-  Analyze nutritional and training program PDFs to extract body composition data (weight, fat mass, lean mass, BMI),
-  supplement/compound history, and training plans. Use this skill whenever the user asks about their nutrition programs,
-  supplement history, weight trends, body composition analysis, training program comparisons, health risk assessment
-  from supplement use, or wants predictions and recommendations based on their program history. Trigger on mentions of:
-  programmi, programma, nutrizionista, integratori, supplementi, peso, massa grassa, massa magra, composizione corporea,
-  cutting, bulking, SARM, PCT, pro-ormone, ciclo, allenamento, dieta, piano alimentare, calorie, kcal, macros,
-  proteine, carboidrati, grassi, macronutrienti, deficit calorico, surplus, or any reference to numbered
-  programs (#XX). Also trigger when the user uploads or references PDF files containing nutritional/training data,
+  Personal health assistant that indexes and searches your nutritional programs, training plans, supplement cycles,
+  and body composition history so Claude can answer questions, cross-reference data, and provide health guidance
+  within any conversation. Reads numbered program PDFs (#16–#XX), Garmin wearable exports, and bloodwork results
+  to build a searchable health knowledge base. Tracks body composition trends (weight, fat mass, lean mass, BMI),
+  manages supplement/compound cycling with health risk assessment, calculates daily macros and calorie intake,
+  and maintains persistent memory of next steps, nutritionist recommendations, and decisions between sessions.
+  Use this skill whenever the user asks about their health data, nutrition programs, supplement history, weight trends,
+  body composition analysis, training program comparisons, health risk assessment from supplement use, wants predictions
+  based on their program history, or asks Claude to remember/recall health-related information.
+  Trigger on mentions of: programmi, programma, nutrizionista, integratori, supplementi, peso, massa grassa,
+  massa magra, composizione corporea, cutting, bulking, SARM, PCT, pro-ormone, ciclo, allenamento, dieta,
+  piano alimentare, calorie, kcal, macros, proteine, carboidrati, grassi, macronutrienti, deficit calorico,
+  surplus, Garmin, analisi del sangue, esami, Musolino, or any reference to numbered programs (#XX).
+  Also trigger when the user uploads PDF files with nutritional/training data, Garmin export data,
   or asks for health risk analysis related to performance-enhancing compounds.
 ---
 
-# Nutritional Program Analyzer
+# Personal Health Assistant
 
-This skill extracts and analyzes data from a structured set of nutritional/training program PDFs organized in numbered directories (e.g., `#53_programmi/`). Each directory typically contains a nutrition PDF and a training PDF (marked "all." for "allenamento").
+Your AI-powered health companion that gives Claude deep knowledge of your nutritional programs, training plans, supplement cycles, and body composition history. Instead of re-explaining your health context every session, this skill indexes all your program PDFs (organized in numbered directories like `#53_programmi/`) and maintains persistent memory, so Claude can search, cross-reference, and reason about your health data as a knowledgeable assistant.
+
+Each program directory typically contains a nutrition PDF and a training PDF (marked "all." for "allenamento").
 
 ## Prerequisites
 

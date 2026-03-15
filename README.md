@@ -8,7 +8,7 @@ A collection of personal AI skills — installable as a Claude Code plugin marke
 
 | Skill | Description |
 |-------|-------------|
-| [corpo](plugins/corpo) | Body recomposition tracker — parses nutritional/training PDFs, tracks body composition, manages supplement cycles with health risk assessment, and generates interactive dashboards |
+| [corpo](plugins/corpo) | Personal health assistant — indexes your nutritional programs, training plans, supplement cycles, and body composition history so Claude can search, cross-reference, and provide health guidance within any conversation |
 
 ## Installation
 

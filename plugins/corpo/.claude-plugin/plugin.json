@@ -1,5 +1,5 @@
 {
   "name": "corpo",
-  "description": "Body recomposition tracker — parses nutritional/training program PDFs, tracks body composition over time, manages supplement cycles with health risk assessment, integrates Garmin wearable data, and generates interactive health dashboards.",
-  "version": "1.0.0"
+  "description": "Personal health assistant — indexes your nutritional programs, training plans, supplement cycles, and body composition history so Claude can search, cross-reference, and provide health guidance within any conversation. Parses program PDFs, tracks body composition trends, manages supplement cycling with health risk assessment, integrates Garmin wearable data, and maintains persistent memory between sessions.",
+  "version": "1.1.0"
 }
