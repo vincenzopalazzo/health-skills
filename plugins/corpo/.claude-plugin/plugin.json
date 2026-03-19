@@ -1,5 +1,5 @@
 {
   "name": "corpo",
   "description": "Personal health assistant — indexes your nutritional programs, training plans, supplement cycles, and body composition history so Claude can search, cross-reference, and provide health guidance within any conversation. Parses program PDFs, tracks body composition trends, manages supplement cycling with health risk assessment, integrates Garmin wearable data, and maintains persistent memory between sessions.",
-  "version": "1.1.0"
+  "version": "1.2.0"
 }
