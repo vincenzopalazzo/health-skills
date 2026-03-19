@@ -245,7 +245,7 @@ def format_summary(memory):
         lines.append(f"\n--- NOTE RECENTI ---")
         for note in notes[-5:]:  # last 5
             source_str = f" [{note['source']}]" if note.get("source") else ""
-            note_text = note.get('text') or note.get('content', '(no text)')
+            note_text = note.get("text") or note.get("content", "(no text)")
             lines.append(f"  • {note_text}{source_str} ({note['date'][:10]})")
 
     # Nutritionist recommendations
@@ -263,15 +263,17 @@ def format_summary(memory):
     if blood:
         lines.append(f"\n--- STORICO ANALISI ---")
         for b in blood[-3:]:
-            if 'tests_done' in b:
-                tests_str = ', '.join(b['tests_done'][:5]) + ('...' if len(b['tests_done']) > 5 else '')
-            elif 'results' in b and isinstance(b['results'], dict):
-                tests_str = ', '.join(b['results'].keys())
-            elif 'key_findings' in b:
+            if "tests_done" in b:
+                tests_str = ", ".join(b["tests_done"][:5]) + (
+                    "..." if len(b["tests_done"]) > 5 else ""
+                )
+            elif "results" in b and isinstance(b["results"], dict):
+                tests_str = ", ".join(b["results"].keys())
+            elif "key_findings" in b:
                 tests_str = f"{len(b['key_findings'])} findings"
             else:
                 tests_str = "(no details)"
-            lab_str = f" [{b.get('lab', '')}]" if b.get('lab') else ""
+            lab_str = f" [{b.get('lab', '')}]" if b.get("lab") else ""
             lines.append(f"  • {b['date']}{lab_str}: {tests_str}")
 
     # Recently completed steps
