@@ -31,8 +31,10 @@ Each program directory typically contains a nutrition PDF and a training PDF (ma
 This skill requires the following Python packages (install via pip if not already present):
 
 ```bash
-pip install pdfplumber python-docx --break-system-packages
+pip install python-docx --break-system-packages
 ```
+
+> **Note**: Wearable CSV analysis and bloodwork PDF parsing are handled natively by Claude — no additional Python packages needed for those features.
 
 ## What This Skill Does
 
@@ -92,11 +94,46 @@ pip install pdfplumber python-docx --break-system-packages
    - Categories: analisi, supplementi, alimentazione, allenamento, visita, generale
    - Each step has: id, description, category, priority (alta/media/bassa), source, due_date, details
 
-8. **Wearable Data Integration (WHOOP + CGM)** — Parses and analyzes wearable device exports:
-   - **WHOOP**: Physiological cycles (recovery score, HRV RMSSD, RHR), sleep data (duration, performance, consistency, onset time), workout logs (activity type, strain). Generates trend analysis (7-day rolling), alerts for recovery crashes, HRV drops, RHR spikes, and sleep consistency issues.
-   - **CGM (FreeStyle Libre)**: Continuous glucose readings with Time In Range (TIR), hypoglycemia/hyperglycemia detection, hourly pattern analysis (identifies morning hypoglycemia), estimated HbA1c.
-   - Cross-references wearable data with supplement changes (e.g., HRV crash correlating with PED use or padel absence).
-   - Merges summaries into `nutrizionista_memory.json` under `wearable_data` section.
+8. **Wearable Data Integration (WHOOP + CGM)** — Claude reads wearable CSV exports directly (no scripts needed) and produces structured analysis:
+
+   **WHOOP data** — When the user provides WHOOP CSV exports (cycles, sleeps, workouts), read them directly and compute:
+   - **Recovery/HRV/RHR/Strain stats**: mean, median, min, max, stdev across all cycles
+   - **7-day trend analysis**: compare last 7 days vs previous 7 days for HRV, RHR, and recovery. Report direction as "improving" or "declining"
+   - **Sleep analysis**: average duration (minutes and hours), sleep performance %, consistency %, onset time patterns
+   - **Workout breakdown**: total count, grouped by activity type
+   - **Alerts** (flag these automatically):
+     - Recovery < 33% → "CRITICAL: low recovery"
+     - HRV < 30ms → "CRITICAL: HRV dangerously low"
+     - RHR spread > 10 bpm → "WARNING: RHR instability"
+     - Sleep consistency < 60% → "WARNING: irregular sleep schedule"
+
+   **CGM data (FreeStyle Libre)** — When the user provides glucose CSV exports, read them directly and compute:
+   - **Overall stats**: mean, median, min, max, stdev of glucose readings (mg/dL)
+   - **Time In Range (TIR)**: % of readings in 70–140 mg/dL target range
+   - **Hypo/Hyper detection**: % and count of readings below 70 mg/dL (hypoglycemia) and above 180 mg/dL (hyperglycemia)
+   - **Hourly pattern**: mean, min, max glucose for each hour (00–23), to identify morning hypoglycemia or post-meal spikes
+   - **Estimated HbA1c**: calculate from mean glucose using formula: (mean_mg_dl + 46.7) / 28.7
+   - **Alerts**:
+     - Hypo > 10% of readings → "CRITICAL: significant hypoglycemia"
+     - Morning (06–11) hypo > 5% → "WARNING: morning hypoglycemia pattern"
+
+   Cross-reference wearable data with supplement changes (e.g., HRV crash correlating with PED use or padel absence).
+
+   **Memory integration** — Store results in `nutrizionista_memory.json` under `wearable_data`:
+   ```json
+   {
+     "wearable_data": {
+       "whoop": {
+         "last_updated": "ISO timestamp",
+         "summary": { /* recovery, hrv, rhr, strain, sleep, workouts, trends, alerts */ }
+       },
+       "cgm": {
+         "last_updated": "ISO timestamp",
+         "summary": { /* overall, time_in_range, hourly_pattern, estimated_hba1c, alerts */ }
+       }
+     }
+   }
+   ```
 
    **Directory convention**: Each wearable device has its own top-level directory in the workspace root:
    ```
@@ -105,17 +142,42 @@ pip install pdfplumber python-docx --break-system-packages
    ├── glicemia-monitor/     ← CGM (FreeStyle Libre) exports (CSV)
    └── <new-device>/         ← Any new wearable gets its own top-level directory
    ```
-   The script auto-discovers CSV files inside these directories. When adding a new wearable device,
-   simply create a top-level directory with a descriptive name and drop the exports there.
+   When adding a new wearable device, create a top-level directory with a descriptive name and drop the exports there.
    Update `CLAUDE.md` at the workspace root to document the new directory.
 
-9. **Bloodwork PDF Parser** — Parses Italian laboratory blood test reports:
-   - Extracts test results with values, units, reference ranges, and status (normal/high/low/borderline).
-   - Supports 50+ common Italian lab tests across categories: chimica clinica (liver, kidney, lipids, glucose, electrolytes), emocromo (CBC with differential), sieroimmunologia (hormones, vitamins, tumor markers), elettroforesi proteica.
-   - Auto-classifies results and generates clinical findings (critical, warnings, normal).
-   - Identifies missing recommended tests based on compound history (e.g., testosterone/LH/FSH after SARMs, AFP after hepatotoxic compounds).
-   - Merges structured results into `nutrizionista_memory.json` under `bloodwork_history`.
-   - Handles common Italian lab report formats (Biomedical, Synlab, etc.).
+9. **Bloodwork Analysis** — Claude reads lab report PDFs directly (no scripts or `pdfplumber` needed) and extracts structured results:
+
+   When the user provides a blood test PDF, read it directly using Claude's native PDF support and:
+   - **Extract every test result** from the report: test name, numeric value, unit, reference range (as printed by the lab)
+   - **Classify each result** as `normal`, `high`, `low`, `borderline_high`, or `borderline_low` based on the lab's own printed reference ranges
+   - **Group by category**: liver, kidney, lipids, metabolic, hormonal, thyroid, vitamins, cbc, inflammatory, iron, tumor_markers, electrolytes, other
+   - **Generate clinical findings**:
+     - `critical`: values significantly outside range (e.g., liver enzymes > 2x upper limit)
+     - `warnings`: borderline values or mild deviations
+     - `good`: normal results worth noting (e.g., good HDL, normal liver after a cycle)
+   - **Flag missing recommended tests** based on compound history (e.g., testosterone/LH/FSH after SARMs, AFP/GGT after hepatotoxic compounds, lipid panel after any PED cycle)
+
+   This approach works with **any lab format, any language** — not limited to Italian labs or specific formats. Claude reads whatever the PDF contains.
+
+   **Memory integration** — Append results to `bloodwork_history` array in `nutrizionista_memory.json`:
+   ```json
+   {
+     "bloodwork_history": [
+       {
+         "date": "YYYY-MM-DD",
+         "lab": "Lab name (if found)",
+         "context": "User-provided context (e.g., Post RAD 140 cycle)",
+         "results": {
+           "liver": { "got": {"value": 25, "unit": "u/l", "range": "0-40", "status": "normal"}, ... },
+           "kidney": { ... },
+           "lipids": { ... }
+         },
+         "key_findings": ["critical and warning findings"],
+         "missing_tests": ["recommended tests not found in report"]
+       }
+     ]
+   }
+   ```
 
 10. **General Recommendations** — Provides evidence-based suggestions for:
    - Supplement protocols based on historical patterns that worked
@@ -214,82 +276,32 @@ memory = load_memory("<programs-root>")
 save_memory("<programs-root>", memory)
 ```
 
-### Step 6: Parse Wearable Data (WHOOP / CGM)
+### Step 6: Analyze Wearable Data (WHOOP / CGM)
 
-Wearable data lives in dedicated top-level directories. The script auto-discovers CSV files inside them.
+Wearable data lives in dedicated top-level directories. Claude reads the CSV files directly — no scripts needed.
 
-```bash
-# WHOOP — auto-discover CSVs in the garmin-data/ directory
-python3 <skill-dir>/scripts/parse_wearable.py whoop \
-  --dir <workspace-root>/garmin-data/ \
-  --output <whoop_data.json>
+When the user asks to analyze wearable data or provides CSV files:
+1. Look for CSV files in `fitness/garmin-data/` (WHOOP) or `fitness/glicemia-monitor/` (CGM)
+2. Read the CSV files directly using Claude's file reading capability
+3. Compute the statistics described in section 8 above
+4. Present a summary to the user with key metrics, trends, and any alerts
+5. Update `nutrizionista_memory.json` → `wearable_data` section with the analysis
 
-# WHOOP — or specify individual files
-python3 <skill-dir>/scripts/parse_wearable.py whoop \
-  --cycles <physiological_cycles.csv> \
-  --sleeps <sleeps.csv> \
-  --workouts <workouts.csv> \
-  --output <whoop_data.json>
+This works with any wearable CSV format — Claude adapts to whatever columns are present.
 
-# WHOOP — summary only (no raw data dump)
-python3 <skill-dir>/scripts/parse_wearable.py whoop --dir <workspace-root>/garmin-data/ --summary
+### Step 7: Analyze Bloodwork PDFs
 
-# WHOOP — parse and merge summary into memory
-python3 <skill-dir>/scripts/parse_wearable.py whoop --dir <workspace-root>/garmin-data/ --merge-memory <nutrizionista_memory.json>
-```
+When the user provides a blood test PDF:
+1. Read the PDF directly using Claude's native PDF support
+2. Extract all test results with values, units, and reference ranges as printed by the lab
+3. Classify and group results as described in section 9 above
+4. Present findings organized by severity (critical → warnings → normal)
+5. Flag missing recommended tests based on compound history
+6. Update `nutrizionista_memory.json` → `bloodwork_history` array with structured results
 
-```bash
-# CGM — auto-discover CSVs in the glicemia-monitor/ directory
-python3 <skill-dir>/scripts/parse_wearable.py cgm --dir <workspace-root>/glicemia-monitor/ --output <cgm_data.json>
+Ask the user for context (e.g., "Post RAD 140 cycle", "Programma #57") to store alongside the results.
 
-# CGM — or specify a single file
-python3 <skill-dir>/scripts/parse_wearable.py cgm --input <glucose_data.csv> --summary
-
-# CGM — merge into memory
-python3 <skill-dir>/scripts/parse_wearable.py cgm --dir <workspace-root>/glicemia-monitor/ --merge-memory <nutrizionista_memory.json>
-```
-
-The WHOOP parser generates:
-- Recovery, HRV, RHR, and strain statistics (mean, median, min, max, stdev)
-- 7-day trend analysis (improving/declining) for HRV, RHR, recovery
-- Sleep duration, performance, and consistency averages
-- Workout breakdown by activity type
-- Alerts for recovery crashes (<33%), HRV drops (<30ms), RHR instability
-
-The CGM parser generates:
-- Mean glucose, Time In Range (TIR), hypoglycemia/hyperglycemia percentages
-- Hourly glucose pattern (identifies morning hypoglycemia windows)
-- Estimated HbA1c from average glucose
-- Alerts for significant hypoglycemia (>10% below 70 mg/dL)
-
-### Step 7: Parse Bloodwork PDFs
-
-Parse Italian blood test PDF reports into structured JSON:
-
-```bash
-# Parse a blood test PDF
-python3 <skill-dir>/scripts/parse_bloodwork.py <pdf_path> --output <bloodwork.json>
-
-# Parse with context about which program was active
-python3 <skill-dir>/scripts/parse_bloodwork.py <pdf_path> \
-  --context "Programma #57, post cicli PED #49-#56" \
-  --output <bloodwork.json>
-
-# Quick summary of findings
-python3 <skill-dir>/scripts/parse_bloodwork.py <pdf_path> --summary
-
-# Parse and merge directly into memory
-python3 <skill-dir>/scripts/parse_bloodwork.py <pdf_path> \
-  --context "Post RAD 140 cycle" \
-  --merge-memory <nutrizionista_memory.json>
-```
-
-The bloodwork parser:
-- Extracts 50+ Italian lab test types with values, units, ranges, and status classification
-- Groups results by category (liver, kidney, lipids, hormonal, CBC, etc.)
-- Generates clinical findings (critical abnormalities, warnings, normal results)
-- Identifies missing recommended tests based on compound history
-- Merges structured data into `bloodwork_history` array in memory
+This works with any lab report format and language — Claude reads whatever the PDF contains.
 
 ### Step 8: Current Status & Post-Program Plan
 
