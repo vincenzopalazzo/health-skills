@@ -1,23 +1,14 @@
 ---
 name: corpo
 description: >
-  Personal health assistant that indexes and searches your nutritional programs, training plans, supplement cycles,
-  and body composition history so Claude can answer questions, cross-reference data, and provide health guidance
-  within any conversation. Reads numbered program PDFs (#16–#XX), Garmin wearable exports, and bloodwork results
-  to build a searchable health knowledge base. Tracks body composition trends (weight, fat mass, lean mass, BMI),
-  manages supplement/compound cycling with health risk assessment, calculates daily macros and calorie intake,
-  and maintains persistent memory of next steps, nutritionist recommendations, and decisions between sessions.
-  Use this skill whenever the user asks about their health data, nutrition programs, supplement history, weight trends,
-  body composition analysis, training program comparisons, health risk assessment from supplement use, wants predictions
-  based on their program history, or asks Claude to remember/recall health-related information.
-  Trigger on mentions of: programmi, programma, nutrizionista, integratori, supplementi, peso, massa grassa,
-  massa magra, composizione corporea, cutting, bulking, SARM, PCT, pro-ormone, ciclo, allenamento, dieta,
-  piano alimentare, calorie, kcal, macros, proteine, carboidrati, grassi, macronutrienti, deficit calorico,
-  surplus, Garmin, analisi del sangue, esami, Musolino, or any reference to numbered programs (#XX).
-  Also trigger when the user uploads PDF files with nutritional/training data, Garmin/WHOOP export data,
-  CGM/glucose data, blood test results, or asks for health risk analysis related to performance-enhancing compounds.
-  Trigger on mentions of: WHOOP, HRV, recovery, sleep score, strain, CGM, glicemia, FreeStyle Libre,
-  analisi del sangue, esami del sangue, emocromo, colesterolo, HDL, LDL, trigliceridi, fegato, testosterone.
+  Personal health assistant that indexes nutritional programs, training plans, supplement cycles, body composition,
+  wearable data, and bloodwork so Claude can search, cross-reference, and provide health guidance.
+  Reads numbered program PDFs (#16–#XX), Garmin/WHOOP exports, CGM data, and blood test results.
+  Tracks weight/fat/lean mass trends, manages supplement cycling with risk assessment, calculates macros,
+  and maintains persistent memory of decisions and nutritionist recommendations between sessions.
+  Trigger on: programma, nutrizionista, integratori, peso, massa grassa, massa magra, composizione corporea,
+  cutting, bulking, SARM, PCT, ciclo, allenamento, dieta, calorie, kcal, macros, proteine, deficit calorico,
+  Garmin, WHOOP, HRV, CGM, glicemia, analisi del sangue, emocromo, colesterolo, testosterone, or #XX programs.
 ---
 
 # Personal Health Assistant
