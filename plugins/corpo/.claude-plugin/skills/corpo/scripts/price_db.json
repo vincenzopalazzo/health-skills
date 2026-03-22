@@ -1,0 +1,374 @@
+{
+  "version": "2.0",
+  "eur_chf_rate": 0.95,
+  "locations": {
+    "bennet_ponte_tresa": {
+      "name": "Bennet",
+      "city": "Lavena Ponte Tresa",
+      "country": "IT",
+      "currency": "EUR",
+      "fetch_sources": [
+        "https://www.bennet.com/volantino"
+      ]
+    },
+    "migros_lugano": {
+      "name": "Migros",
+      "city": "Lugano",
+      "country": "CH",
+      "currency": "CHF",
+      "fetch_sources": [
+        "https://www.migros.ch/it/azione-della-settimana"
+      ]
+    }
+  },
+  "prices": {
+    "bennet_ponte_tresa": {
+      "carne rossa magra": {
+        "current": {"min": 12.0, "max": 16.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "carne bianca magra": {
+        "current": {"min": 7.0, "max": 10.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "carne bianca": {
+        "current": {"min": 7.0, "max": 10.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "hamburger": {
+        "current": {"min": 9.0, "max": 13.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "bresaola": {
+        "current": {"min": 28.0, "max": 38.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "fesa": {
+        "current": {"min": 14.0, "max": 20.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "crudo sgrassato": {
+        "current": {"min": 22.0, "max": 30.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "speck sgrassato": {
+        "current": {"min": 18.0, "max": 26.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "affettato magro": {
+        "current": {"min": 16.0, "max": 24.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "pesce magro": {
+        "current": {"min": 12.0, "max": 18.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "pesce azzurro": {
+        "current": {"min": 14.0, "max": 22.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "gamberetti": {
+        "current": {"min": 10.0, "max": 16.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "gamberi": {
+        "current": {"min": 10.0, "max": 16.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "seppie": {
+        "current": {"min": 8.0, "max": 14.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "calamari": {
+        "current": {"min": 9.0, "max": 14.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "polipo": {
+        "current": {"min": 10.0, "max": 16.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "tonno al naturale": {
+        "current": {"min": 14.0, "max": 20.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "albumi": {
+        "current": {"min": 4.0, "max": 6.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "uova": {
+        "current": {"min": 2.50, "max": 3.50, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "yogurt senza zuccheri": {
+        "current": {"min": 4.0, "max": 6.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "yogurt": {
+        "current": {"min": 4.0, "max": 6.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "ricotta vaccina": {
+        "current": {"min": 4.0, "max": 7.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "mozzarella light": {
+        "current": {"min": 6.0, "max": 10.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "pasta": {
+        "current": {"min": 1.20, "max": 2.50, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "riso": {
+        "current": {"min": 1.80, "max": 3.00, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "riso basmati": {
+        "current": {"min": 2.50, "max": 4.00, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "avena": {
+        "current": {"min": 2.50, "max": 4.50, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "fiocchi avena": {
+        "current": {"min": 2.50, "max": 4.50, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "fette biscottate": {
+        "current": {"min": 3.00, "max": 5.00, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "gallette": {
+        "current": {"min": 4.00, "max": 7.00, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "wasa": {
+        "current": {"min": 5.00, "max": 8.00, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "banana": {
+        "current": {"min": 1.20, "max": 2.00, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "frutta fresca": {
+        "current": {"min": 2.00, "max": 4.00, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "marmellata senza zuccheri": {
+        "current": {"min": 8.00, "max": 14.00, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "olio evo": {
+        "current": {"min": 6.00, "max": 10.00, "updated": "2026-03-01", "source": "estimate", "unit": "l"},
+        "history": []
+      },
+      "frutta secca": {
+        "current": {"min": 12.00, "max": 20.00, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "avocado": {
+        "current": {"min": 5.00, "max": 8.00, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "whey": {
+        "current": {"min": 25.00, "max": 40.00, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "creatina": {
+        "current": {"min": 20.00, "max": 35.00, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "legumi": {
+        "current": {"min": 1.50, "max": 3.00, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "latte vegetale": {
+        "current": {"min": 1.50, "max": 2.50, "updated": "2026-03-01", "source": "estimate", "unit": "l"},
+        "history": []
+      },
+      "latte scremato": {
+        "current": {"min": 1.00, "max": 1.60, "updated": "2026-03-01", "source": "estimate", "unit": "l"},
+        "history": []
+      },
+      "succo pompelmo": {
+        "current": {"min": 2.00, "max": 4.00, "updated": "2026-03-01", "source": "estimate", "unit": "l"},
+        "history": []
+      }
+    },
+    "migros_lugano": {
+      "carne rossa magra": {
+        "current": {"min": 18.0, "max": 28.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "carne bianca magra": {
+        "current": {"min": 12.0, "max": 18.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "carne bianca": {
+        "current": {"min": 12.0, "max": 18.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "hamburger": {
+        "current": {"min": 14.0, "max": 22.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "bresaola": {
+        "current": {"min": 45.0, "max": 60.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "fesa": {
+        "current": {"min": 22.0, "max": 32.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "crudo sgrassato": {
+        "current": {"min": 35.0, "max": 50.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "speck sgrassato": {
+        "current": {"min": 28.0, "max": 40.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "affettato magro": {
+        "current": {"min": 24.0, "max": 36.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "pesce magro": {
+        "current": {"min": 18.0, "max": 28.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "pesce azzurro": {
+        "current": {"min": 22.0, "max": 35.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "gamberetti": {
+        "current": {"min": 16.0, "max": 26.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "gamberi": {
+        "current": {"min": 16.0, "max": 26.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "seppie": {
+        "current": {"min": 14.0, "max": 22.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "calamari": {
+        "current": {"min": 15.0, "max": 24.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "polipo": {
+        "current": {"min": 16.0, "max": 26.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "tonno al naturale": {
+        "current": {"min": 20.0, "max": 30.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "albumi": {
+        "current": {"min": 6.0, "max": 10.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "uova": {
+        "current": {"min": 4.50, "max": 6.50, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "yogurt senza zuccheri": {
+        "current": {"min": 6.0, "max": 9.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "yogurt": {
+        "current": {"min": 6.0, "max": 9.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "ricotta vaccina": {
+        "current": {"min": 7.0, "max": 12.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "mozzarella light": {
+        "current": {"min": 10.0, "max": 16.0, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "pasta": {
+        "current": {"min": 1.80, "max": 3.50, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "riso": {
+        "current": {"min": 2.50, "max": 4.50, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "riso basmati": {
+        "current": {"min": 3.50, "max": 6.00, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "avena": {
+        "current": {"min": 3.50, "max": 6.50, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "fiocchi avena": {
+        "current": {"min": 3.50, "max": 6.50, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "fette biscottate": {
+        "current": {"min": 4.50, "max": 7.50, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "gallette": {
+        "current": {"min": 5.50, "max": 9.50, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "wasa": {
+        "current": {"min": 7.00, "max": 11.00, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "banana": {
+        "current": {"min": 2.00, "max": 3.50, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "frutta fresca": {
+        "current": {"min": 3.00, "max": 6.00, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "marmellata senza zuccheri": {
+        "current": {"min": 10.00, "max": 18.00, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "olio evo": {
+        "current": {"min": 9.00, "max": 15.00, "updated": "2026-03-01", "source": "estimate", "unit": "l"},
+        "history": []
+      },
+      "frutta secca": {
+        "current": {"min": 18.00, "max": 30.00, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "avocado": {
+        "current": {"min": 6.00, "max": 10.00, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "whey": {
+        "current": {"min": 35.00, "max": 55.00, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "creatina": {
+        "current": {"min": 30.00, "max": 50.00, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "legumi": {
+        "current": {"min": 2.50, "max": 4.50, "updated": "2026-03-01", "source": "estimate", "unit": "kg"},
+        "history": []
+      },
+      "latte vegetale": {
+        "current": {"min": 2.50, "max": 4.00, "updated": "2026-03-01", "source": "estimate", "unit": "l"},
+        "history": []
+      },
+      "latte scremato": {
+        "current": {"min": 1.60, "max": 2.50, "updated": "2026-03-01", "source": "estimate", "unit": "l"},
+        "history": []
+      },
+      "succo pompelmo": {
+        "current": {"min": 3.00, "max": 5.50, "updated": "2026-03-01", "source": "estimate", "unit": "l"},
+        "history": []
+      }
+    }
+  }
+}

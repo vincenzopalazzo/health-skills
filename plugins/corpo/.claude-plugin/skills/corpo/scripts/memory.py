@@ -65,6 +65,18 @@ def create_default_memory():
         "nutritionist_recommendations": [],
         "bloodwork_history": [],
         "decisions_log": [],
+        "shopping_preferences": {
+            "locations": ["bennet_ponte_tresa", "migros_lugano"],
+            "people": 2,
+            "preferences": {
+                "pesce_magro": "tonno fresco abbattuto",
+                "pesce_azzurro": "salmone fresco abbattuto",
+                "whey_brand": "+Watt (solo Vincenzo)",
+                "affettati_mix": "fesa tacchino 5x + bresaola 2x",
+            },
+            "last_generated": None,
+            "notion_db_id": None,
+        },
     }
 
 
@@ -181,6 +193,57 @@ def log_decision(memory, decision, reasoning, related_program=None):
     }
     memory["decisions_log"].append(entry)
     return entry
+
+
+def get_shopping_preferences(memory):
+    """Get shopping preferences, initializing defaults if missing."""
+    if "shopping_preferences" not in memory:
+        memory["shopping_preferences"] = {
+            "locations": ["bennet_ponte_tresa", "migros_lugano"],
+            "people": 2,
+            "preferences": {},
+            "last_generated": None,
+            "notion_db_id": None,
+        }
+    return memory["shopping_preferences"]
+
+
+def set_shopping_preference(memory, key, value):
+    """Set a shopping preference value."""
+    prefs = get_shopping_preferences(memory)
+    if key in ("locations", "people", "notion_db_id", "last_generated"):
+        if key == "people":
+            value = int(value)
+        elif key == "locations":
+            value = [v.strip() for v in value.split(",")]
+        prefs[key] = value
+    else:
+        prefs.setdefault("preferences", {})[key] = value
+    return prefs
+
+
+def update_shopping_last_generated(memory):
+    """Mark when the shopping list was last generated."""
+    prefs = get_shopping_preferences(memory)
+    prefs["last_generated"] = datetime.now().isoformat()
+
+
+def format_shopping_preferences(memory):
+    """Format shopping preferences as human-readable text."""
+    prefs = get_shopping_preferences(memory)
+    lines = []
+    lines.append("--- PREFERENZE SPESA ---")
+    lines.append(f"  Persone: {prefs.get('people', 1)}")
+    lines.append(f"  Negozi: {', '.join(prefs.get('locations', []))}")
+    custom = prefs.get("preferences", {})
+    if custom:
+        lines.append("  Preferenze specifiche:")
+        for k, v in custom.items():
+            lines.append(f"    {k}: {v}")
+    last = prefs.get("last_generated")
+    if last:
+        lines.append(f"  Ultima lista generata: {last[:10]}")
+    return "\n".join(lines)
 
 
 def update_current_program(memory, program_num, program_data=None):
@@ -313,6 +376,25 @@ def main():
     parser.add_argument(
         "--init", action="store_true", help="Initialize/reset memory file"
     )
+    parser.add_argument(
+        "--set-shopping-pref",
+        nargs=2,
+        metavar=("KEY", "VALUE"),
+        help="Set a shopping preference (e.g., people 2, locations bennet_ponte_tresa,migros_lugano)",
+    )
+    parser.add_argument(
+        "--show-shopping-prefs",
+        action="store_true",
+        help="Show current shopping preferences",
+    )
+    parser.add_argument(
+        "--log-price",
+        nargs=3,
+        metavar=("LOCATION", "FOOD", "PRICE"),
+        help="Log a price from a receipt",
+    )
+    parser.add_argument("--log-price-source", default="scontrino", help="Price source")
+    parser.add_argument("--log-price-note", help="Note for logged price")
     args = parser.parse_args()
 
     if args.init:
@@ -350,6 +432,35 @@ def main():
         note = add_note(memory, args.add_note, source=args.source)
         save_memory(args.programs_root, memory)
         print(f"Added note #{note['id']}", file=sys.stderr)
+
+    elif args.set_shopping_pref:
+        key, value = args.set_shopping_pref
+        prefs = set_shopping_preference(memory, key, value)
+        save_memory(args.programs_root, memory)
+        print(f"Set shopping preference {key} = {value}", file=sys.stderr)
+
+    elif args.show_shopping_prefs:
+        print(format_shopping_preferences(memory))
+
+    elif args.log_price:
+        location, food, price_str = args.log_price
+        price = float(price_str)
+        # Import and use generate_shopping_list's price functions
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        price_db_path = os.path.join(script_dir, "price_db.json")
+        if os.path.exists(price_db_path):
+            sys.path.insert(0, script_dir)
+            from generate_shopping_list import load_price_db, log_receipt_price, save_price_db
+
+            price_db = load_price_db(price_db_path)
+            log_receipt_price(price_db, location, food, price, args.log_price_note)
+            save_price_db(price_db_path, price_db)
+            print(
+                f"Logged price: {food} at {location} = {price} ({args.log_price_source})",
+                file=sys.stderr,
+            )
+        else:
+            print(f"Price database not found: {price_db_path}", file=sys.stderr)
 
     elif args.summary:
         print(format_summary(memory))

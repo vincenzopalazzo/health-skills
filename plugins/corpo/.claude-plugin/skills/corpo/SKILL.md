@@ -8,7 +8,9 @@ description: >
   and maintains persistent memory of decisions and nutritionist recommendations between sessions.
   Trigger on: programma, nutrizionista, integratori, peso, massa grassa, massa magra, composizione corporea,
   cutting, bulking, SARM, PCT, ciclo, allenamento, dieta, calorie, kcal, macros, proteine, deficit calorico,
-  Garmin, WHOOP, HRV, CGM, glicemia, analisi del sangue, emocromo, colesterolo, testosterone, or #XX programs.
+  Garmin, WHOOP, HRV, CGM, glicemia, analisi del sangue, emocromo, colesterolo, testosterone, #XX programs,
+  spesa, lista della spesa, shopping list, cosa comprare, supermercato, Bennet, Migros, Coop, budget spesa,
+  prezzo, prezzi, scontrino, volantino.
 ---
 
 # Personal Health Assistant
@@ -319,6 +321,57 @@ After extraction, always analyze the **latest program** (highest number) to prov
 - After DMZ (#58 → #59): Veno Test + Ripper + Liver
 - After DMZ (#60 → #61-62): Liver only, then Animal Cuts for cutting
 - After latest cycle, always compare with these patterns and suggest the best approach
+
+### Step 9: Generate Shopping List
+
+Generate a weekly shopping list from the current program with multi-store price comparison:
+
+```bash
+python3 <skill-dir>/scripts/generate_shopping_list.py \
+  --program-pdf "<programs-base-directory>/#73_programmi/Palazzo Vincenzo.pdf" \
+  --people 2 \
+  --format markdown \
+  --output shopping_list.md
+```
+
+This parses the meal plan (including NOTA SECONDI rotation), aggregates weekly quantities, and compares prices across configured stores (Bennet IT, Migros CH). See section 11 for full documentation.
+
+## 11. Weekly Shopping List Generator
+
+Generates a weekly shopping list by parsing the nutritional program PDF, aggregating quantities for N people, and comparing prices across multiple stores with historical price tracking.
+
+**Features:**
+- Parses the meal plan including NOTA SECONDI weekly protein rotation table
+- Calculates total weekly quantities per food item, multiplied by number of people
+- Compares prices across multiple store locations (cross-currency with EUR/CHF normalization)
+- Maintains price history with source tracking (scontrino, web_search, volantino, estimate)
+- Outputs in JSON, Markdown, or Notion-compatible format
+- Groups items by category: carne, pesce, uova/latticini, affettati, carboidrati, frutta, condimenti, bevande, integratori
+
+**Adding a new store:**
+1. Add a new entry to `locations` in `scripts/price_db.json` with name, city, country, currency, and fetch_sources
+2. Add price entries for that location under `prices` with current min/max per food
+3. Update shopping preferences in memory: `python3 memory.py <root> --set-shopping-pref locations "bennet_ponte_tresa,migros_lugano,new_store"`
+
+**Price Fetching Behavior** (instructions for Claude):
+1. Before generating a shopping list, attempt a WebSearch to refresh prices
+2. Search for: "[store_name] volantino offerte [current week]"
+3. Parse prices from search result snippets
+4. Update `price_db.json` with source `"web_search"` using: `python3 generate_shopping_list.py --update-price <location> "<food>" <price> web_search`
+5. If no results found, use the existing current price
+6. After user confirms a receipt price (e.g., "ho speso 8.50 EUR/kg per il pollo al Bennet"), update with source `"scontrino"` (highest reliability)
+7. Flag prices not updated in > 30 days as "stale" in the output
+
+**Receipt Processing** (instructions for Claude):
+1. When the user says "ho speso X EUR per Y kg di Z al Bennet", call: `python3 memory.py <root> --log-price bennet_ponte_tresa "<food>" <price_per_kg>`
+2. When the user uploads a receipt photo, extract each item's price and log them individually
+3. Receipt prices (`scontrino` source) have the highest reliability and override estimates
+
+**Price History Dashboard:**
+```bash
+python3 <skill-dir>/scripts/generate_shopping_list.py --report price_history --output price_report.html
+```
+Generates an HTML dashboard showing price trends, staleness, and cross-store comparison over time.
 
 ## Compound Classification Reference
 
